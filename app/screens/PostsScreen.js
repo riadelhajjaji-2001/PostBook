@@ -1,25 +1,81 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View } from 'react-native'
+import { Modal, SafeAreaView, Text, View } from 'react-native'
 import Post from '../components/Post'
 import useGetPosts from '../hooks/useGetPosts'
-
+import {FlatList,TextInput,StyleSheet} from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons';
 function PostsScreen() {
     const url="https://dummyapi.io/data/v1/post?page=1&limit=10"
     const [posts,setPosts]=useState([])
+    const [isLoading,setIsLoading]=useState(true)
+    const [query,setQuery]=useState("")
+    const [addPostWindow,setAddPostWindow]=useState(false)
+    const searchByTag=async(tag)=>{
+      setIsLoading(true)
+      const fetchedPosts= await useGetPosts(`https://dummyapi.io/data/v1/tag/${tag}/post`);
+      if (fetchedPosts!==[]) { setPosts(fetchedPosts.data);
+      setIsLoading(false)}
+    }
     useEffect(async()=>{
+        setIsLoading(true)
         const fetchedPosts= await useGetPosts(url);
         setPosts(fetchedPosts.data);
-        setTimeout(()=> console.log(fetchedPosts.data),1000)
+        setIsLoading(false)
+       // setTimeout(()=> console.log(fetchedPosts.data),1000)
       
         //erroe handling for fetching posts
     },[])
+    const renderItem = ({ post }) =><Post post={post}/>
   return (
-    <View>
-        {!(posts===[])?
-        posts.map((post)=><Post post={post} key={post.id}/>):<Text>no posts</Text>
+
+    <View style={styles.container}>
+      <View style={styles.toolsBar}>
+          <View style={styles.search}>
+                <TextInput placeholder='Search posts' onChangeText={(tag)=>searchByTag(tag)}/>
+          </View>
+          <View style={styles.addPost}>
+              <Icon size={23} name="post-add" onPress={()=>setAddPostWindow(true)} /> 
+              <Modal visible={addPostWindow}>
+                <Icon name="close" size={20} onPress={()=>setAddPostWindow(false)}></Icon>
+                
+              </Modal>
+          </View>
+          <Text>{query}</Text>
+      </View>
+
+      {/* {console.log(posts)}
+        <FlatList data={posts}
+            keyExtractor={post=>post.id}
+            renderItem={renderItem}
+        /> */}
+        {!isLoading?
+        posts.map((post)=><Post post={post} key={post.id}/>):<Text>Loading...</Text>
         }
     </View>
   )
 }
 
 export default PostsScreen
+const styles = StyleSheet.create({
+            container:{
+              flex:1
+            },
+            toolsBar:{
+             padding:6,
+              backgroundColor:'#eee',
+             // margin:20,
+              alignItems:'center',
+              flexDirection:'row',
+              gap:'10%',
+              alignContent:'space-between'
+
+            },
+            addPost:{
+              width:'20%'
+
+            },
+            search:{
+              width:'70%'
+
+            }
+})
