@@ -1,9 +1,21 @@
 import { View, Text, Image,StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import { TouchableOpacity } from 'react-native'
+
+
 
 const Post = ({post}) => {
+    const deletePost=async(posIid)=>{
+        const myHeaders=new Headers();
+        myHeaders.append("app-id","625c402dc48cf93352d6e34b")
+        const url=`https://dummyapi.io/data/v1/post/${posIid}`;
+        await fetch(url,{headers:myHeaders, method:"DELETE"}).then(res=>setIsDeleted(true))
+        setTimeout(()=>setDisapear(true),2000)
+    }
+    const [isDeleted,setIsDeleted]=useState(false)
+    const [disapear,setDisapear]=useState(false)
   return (
-    <View style={styles.postContainer}>
+    !isDeleted? <TouchableOpacity style={styles.postContainer} onLongPress={()=>deletePost(post.id)} >
         <View style={styles.userInfo}>
             <Image source={{uri:post.owner.picture}}  style={styles.userImage}/>
             <View>
@@ -22,7 +34,7 @@ const Post = ({post}) => {
             </View>
           </View>
       </Text>
-    </View>
+    </TouchableOpacity>:disapear?null:<View style={styles.postContainer}><Text>The post was deleted</Text></View>
   )
 }
 const styles = StyleSheet.create({

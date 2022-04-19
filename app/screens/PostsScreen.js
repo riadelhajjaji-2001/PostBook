@@ -16,6 +16,7 @@ function PostsScreen() {
       if (fetchedPosts!==[]) { setPosts(fetchedPosts.data);
       setIsLoading(false)}
     }
+   
     useEffect(async()=>{
         setIsLoading(true)
         const fetchedPosts= await useGetPosts(url);
@@ -31,13 +32,14 @@ function PostsScreen() {
     <View style={styles.container}>
       <View style={styles.toolsBar}>
           <View style={styles.search}>
-                <TextInput placeholder='Search posts' onChangeText={(tag)=>searchByTag(tag)}/>
+                <TextInput placeholder='Search posts' onChangeText={(tag)=>searchByTag(tag)}/> 
+                {/* il reste le cas ou input est vide */}
           </View>
           <View style={styles.addPost}>
               <Icon size={23} name="post-add" onPress={()=>setAddPostWindow(true)} /> 
               <Modal visible={addPostWindow}>
                 <Icon name="close" size={20} onPress={()=>setAddPostWindow(false)}></Icon>
-                
+
               </Modal>
           </View>
           <Text>{query}</Text>
