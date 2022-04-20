@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native'
 
 
 
-const Post = ({post,tagQ,navigation}) => {
+const Post = ({post,tagQ,OnPress}) => {
     const deletePost=async(posIid)=>{
         const myHeaders=new Headers();
         myHeaders.append("app-id","625c402dc48cf93352d6e34b")
@@ -12,13 +12,13 @@ const Post = ({post,tagQ,navigation}) => {
         await fetch(url,{headers:myHeaders, method:"DELETE"}).then(res=>setIsDeleted(true))
         setTimeout(()=>setDisapear(true),2000)
     }
-    const viewPost=(mypost)=>{
-        navigation.navigate("ViewPost",mypost)
-    }
+    //  const viewPost=(mypost)=>{
+    //      navigation.navigate("ViewPost",mypost)onPress={()=>viewPost(post)}
+    //  }
     const [isDeleted,setIsDeleted]=useState(false)
     const [disapear,setDisapear]=useState(false)
   return (
-    !isDeleted? <TouchableOpacity style={styles.postContainer} onPress={()=>viewPost(post)} onLongPress={()=>deletePost(post.id)} >
+    !isDeleted? <TouchableOpacity style={styles.postContainer} onPress={OnPress}  onLongPress={()=>deletePost(post.id)} >
         <View style={styles.userInfo}>
             <Image source={{uri:post.owner.picture}}  style={styles.userImage}/>
             <View>

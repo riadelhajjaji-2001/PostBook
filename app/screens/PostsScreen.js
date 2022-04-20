@@ -5,7 +5,7 @@ import useGetPosts from '../hooks/useGetPosts'
 import {FlatList,TextInput,StyleSheet} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ScrollView } from 'react-native-web'
-function PostsScreen() {
+function PostsScreen({navigation}) {
     const url="https://dummyapi.io/data/v1/post?page=1&limit=10"
     const [posts,setPosts]=useState([])
     const [isLoading,setIsLoading]=useState(true)
@@ -27,6 +27,10 @@ function PostsScreen() {
       
         //erroe handling for fetching posts
     },[])
+//check if we can pass an entir object as param to the navigation
+    const viewPost=(post_id)=>{
+      navigation.navigate("ViewPost",{post_id:post_id})
+  }
     const renderItem = ({ post }) =><Post post={post}/>
   return (
 
@@ -64,7 +68,7 @@ function PostsScreen() {
         <View style={styles.container}>
             <ScrollView style={styles.container}>
                 {!isLoading?
-                posts.map((post)=><Post tagQ={query} post={post} key={post.id}/>):<Text style={styles.isLoading}>Loading...</Text>
+                posts.map((post)=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} key={post.id}/>):<Text style={styles.isLoading}>Loading...</Text>
                 }
             </ScrollView>
         </View>
