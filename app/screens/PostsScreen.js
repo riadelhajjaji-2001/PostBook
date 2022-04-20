@@ -32,7 +32,17 @@ function PostsScreen() {
     <View style={styles.container}>
       <View style={styles.toolsBar}>
           <View style={styles.search}>
-                <TextInput placeholder='Search posts' onChangeText={(tag)=>searchByTag(tag)}/> 
+                <TextInput placeholder='Search posts' onChangeText={async(tag)=>{
+                  if(tag==""){
+                    setIsLoading(true)
+                    const fetchedPosts= await useGetPosts(url);
+                    setPosts(fetchedPosts.data);
+                    setIsLoading(false)
+                }else{
+                  searchByTag(tag)
+                  setQuery(tag)
+                }
+                  }}/> 
                 {/* il reste le cas ou input est vide */}
           </View>
           <View style={styles.addPost}>
@@ -51,7 +61,7 @@ function PostsScreen() {
             renderItem={renderItem}
         /> */}
         {!isLoading?
-        posts.map((post)=><Post post={post} key={post.id}/>):<Text>Loading...</Text>
+        posts.map((post)=><Post tagQ={query} post={post} key={post.id}/>):<Text style={styles.isLoading}>Loading...</Text>
         }
     </View>
   )
@@ -79,5 +89,9 @@ const styles = StyleSheet.create({
             search:{
               width:'70%'
 
+            },
+            isLoading:{
+              flex:1,
+              backgroundColor:"#eee"
             }
 })
