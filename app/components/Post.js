@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native'
 
 
 
-const Post = ({post}) => {
+const Post = ({post,tagQ}) => {
     const deletePost=async(posIid)=>{
         const myHeaders=new Headers();
         myHeaders.append("app-id","625c402dc48cf93352d6e34b")
@@ -28,9 +28,9 @@ const Post = ({post}) => {
           <View style={styles.TextAndTags}>
             <Text style={styles.postText}>{post.text}</Text>
             <View style={styles.postTags}>
-                    <Text style={styles.postTag}>{post.tags[0]}</Text>
-                    <Text style={styles.postTag}>{post.tags[1]}</Text>
-                    <Text style={styles.postTag}>{post.tags[2]}</Text>
+                    <Text style={[styles.postTag,(tagQ==post.tags[0])?{backgroundColor:'red'}:null]}>{post.tags[0]}</Text>
+                    <Text style={[styles.postTag,(tagQ==post.tags[1])?{backgroundColor:'red'}:null]}>{post.tags[1]}</Text>
+                    <Text style={[styles.postTag,(tagQ==post.tags[2])?{backgroundColor:'red'}:null]}>{post.tags[2]}</Text>
             </View>
           </View>
       </Text>
