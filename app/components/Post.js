@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native'
 
 
 
-const Post = ({post,tagQ}) => {
+const Post = ({post,tagQ,navigation}) => {
     const deletePost=async(posIid)=>{
         const myHeaders=new Headers();
         myHeaders.append("app-id","625c402dc48cf93352d6e34b")
@@ -12,10 +12,13 @@ const Post = ({post,tagQ}) => {
         await fetch(url,{headers:myHeaders, method:"DELETE"}).then(res=>setIsDeleted(true))
         setTimeout(()=>setDisapear(true),2000)
     }
+    const viewPost=(mypost)=>{
+        navigation.navigate("ViewPost",mypost)
+    }
     const [isDeleted,setIsDeleted]=useState(false)
     const [disapear,setDisapear]=useState(false)
   return (
-    !isDeleted? <TouchableOpacity style={styles.postContainer} onLongPress={()=>deletePost(post.id)} >
+    !isDeleted? <TouchableOpacity style={styles.postContainer} onPress={()=>viewPost(post)} onLongPress={()=>deletePost(post.id)} >
         <View style={styles.userInfo}>
             <Image source={{uri:post.owner.picture}}  style={styles.userImage}/>
             <View>
@@ -23,7 +26,7 @@ const Post = ({post,tagQ}) => {
             <Text style={styles.postDate}>{post.publishDate}</Text>
             </View>
         </View>
-      <Text>
+      
           <Image source={{uri:post.image}}  style={styles.PostImage}/>
           <View style={styles.TextAndTags}>
             <Text style={styles.postText}>{post.text}</Text>
@@ -33,7 +36,7 @@ const Post = ({post,tagQ}) => {
                     <Text style={[styles.postTag,(tagQ==post.tags[2])?{backgroundColor:'red'}:null]}>{post.tags[2]}</Text>
             </View>
           </View>
-      </Text>
+      
     </TouchableOpacity>:disapear?null:<View style={styles.postContainer}><Text>The post was deleted</Text></View>
   )
 }

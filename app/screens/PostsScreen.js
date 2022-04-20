@@ -4,6 +4,7 @@ import Post from '../components/Post'
 import useGetPosts from '../hooks/useGetPosts'
 import {FlatList,TextInput,StyleSheet} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { ScrollView } from 'react-native-web'
 function PostsScreen() {
     const url="https://dummyapi.io/data/v1/post?page=1&limit=10"
     const [posts,setPosts]=useState([])
@@ -60,9 +61,13 @@ function PostsScreen() {
             keyExtractor={post=>post.id}
             renderItem={renderItem}
         /> */}
-        {!isLoading?
-        posts.map((post)=><Post tagQ={query} post={post} key={post.id}/>):<Text style={styles.isLoading}>Loading...</Text>
-        }
+        <View style={styles.container}>
+            <ScrollView style={styles.container}>
+                {!isLoading?
+                posts.map((post)=><Post tagQ={query} post={post} key={post.id}/>):<Text style={styles.isLoading}>Loading...</Text>
+                }
+            </ScrollView>
+        </View>
     </View>
   )
 }

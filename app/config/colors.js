@@ -1,3 +1,4 @@
 export default colors={
-    background:'red'
+    background:'red',
+    searchTag:"pink"
 }
