@@ -51,11 +51,11 @@ function PostsScreen({navigation}) {
                 {/* il reste le cas ou input est vide */}
           </View>
           <View style={styles.addPost}>
-              <Icon size={23} name="post-add" onPress={()=>setAddPostWindow(true)} /> 
-              <Modal visible={addPostWindow}>
+              <Icon size={23} name="post-add" onPress={()=>navigation.navigate("CreatePost")} /> 
+              {/* <Modal visible={addPostWindow}>
                 <Icon name="close" size={20} onPress={()=>setAddPostWindow(false)}></Icon>
 
-              </Modal>
+              </Modal> */}
           </View>
           <Text>{query}</Text>
       </View>
