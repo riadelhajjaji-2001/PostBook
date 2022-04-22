@@ -1,8 +1,18 @@
 import { View, Text,StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import React from 'react'
+import {React,useState,useEffect} from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useGetUser, useLogout } from '../config/Database';
+import { Modal } from 'react-native-web';
+
 
 const NavigationHeader = ({title,navigation}) => {
+     const [login, setLogin] = useState(null)
+     const [isVisible,setIsvisible]=useState(false)
+     useEffect(async() => {
+        const user=await useGetUser();
+        setLogin(user)
+     }, [])
+    
   return (
 <View style={styles.Header}>
     <View style={styles.head}>
@@ -13,11 +23,20 @@ const NavigationHeader = ({title,navigation}) => {
     </View>
     <View style={styles.HeaderSections}>
         <View style={styles.HeaderSection1}>
-                <Text style={styles.HeaderText}>Home</Text>
-        </View>
-        <View style={styles.HeaderSection2}>
-                <TouchableWithoutFeedback onPress={()=>navigation.navigate("Login")} style={styles.HeaderText}><Text>Login</Text></TouchableWithoutFeedback>
-        </View>
+        <TouchableWithoutFeedback onPress={()=>navigation.navigate("Posts")} style={styles.HeaderText}><Text style={{fontWeight:'bold',textAlign:'left'}}>Home</Text></TouchableWithoutFeedback>
+        </View>    
+            {
+            login!==null? <TouchableWithoutFeedback onPress={()=>setIsvisible(true)} style={styles.profile}><Text style={styles.username} >{login.firstName+" "+login.lastName}</Text></TouchableWithoutFeedback>:( <View style={styles.HeaderSection2}>
+                <TouchableWithoutFeedback onPress={()=>navigation.navigate("Login")} style={styles.HeaderText}><Text style={{fontWeight:'bold',textAlign:'center'}}>Login</Text></TouchableWithoutFeedback>
+        </View>)
+            
+            }
+        <Modal style={styles.logout} visible={isVisible}>
+
+
+                <Text>Log out</Text>
+                <Icon style={styles.icon} size={20} name="menu" onPress={async()=>await useLogout()}/>
+        </Modal>
     </View>
 </View>
     
@@ -61,7 +80,8 @@ const styles = StyleSheet.create({
         padding:12,
         marginBottom:12,
         marginTop:-10,
-        flex:1
+        flex:1,
+        
 
 
     },
@@ -87,6 +107,16 @@ const styles = StyleSheet.create({
         color:'blue',
         fontSize:20
 
+    },
+    profile:{
+
+    },
+    username:{
+        color:'green',
+        textTransform:'uppercase'
+    },
+    logout:{
+        flex:1
     }
 
 })

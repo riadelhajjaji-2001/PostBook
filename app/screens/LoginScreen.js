@@ -1,15 +1,18 @@
 
-import { View, Text ,Button} from 'react-native'
+import { View, Text,TextInput,StyleSheet,Button } from 'react-native'
 import {React ,useState,useEffect, useCallback} from 'react'
 import { useSetUser } from '../config/Database';
-
-
 const LoginScreen = ({navigation}) => {
 
-  const [user, setUser] = useState({firstName:"hmida",lastName:"beta",email:"nonnono@gmail.com"});
+  const [user, setUser] = useState(null);
+  const [firstname, setFirstname] = useState("")
+  const [lastname, setLastname] = useState("")
+  const [email, setEmail] = useState("")
   const url="https://dummyapi.io/data/v1/user/create"
-    const sendPost=async (myuser) => {
-       
+    const sendUser=async (myuser) => {
+            if(myuser.firstName==""||myuser.lastName==""||myuser.email==""){
+              return null
+            }
             const myHeaders=new Headers();
             myHeaders.append("app-id","625c402dc48cf93352d6e34b");
             myHeaders.append("Accept","application/json")
@@ -30,20 +33,28 @@ const LoginScreen = ({navigation}) => {
             useSetUser(data)
             setUser(data);
     }
-    const createUser=useCallback(async()=>await sendPost,[user])
-  useEffect(async() => {
-    await createUser();
-    console.log(user)
+    //const createUser=useCallback(async()=>await sendUser(user),[user])
+ 
+  useEffect(() => {
+     setUser({firstName:firstname,lastName:lastname,email:email})
   
-  }, [])
-
+  }, [firstname,lastname,email])
+ 
   return (
     <View>
-     
-        <Button title='create user' onPress={async()=>await sendPost(user)}/>
-     <Text> {user.firstName+"   "+user.lastName+"   "+user.email} </Text>
+          <TextInput style={styles.input} placeholder='first name' onChangeText={(text)=>{setFirstname(text)}}/> 
+          <TextInput style={styles.input} placeholder='last name' onChangeText={(text)=>{setLastname(text)}}/> 
+          <TextInput style={styles.input} placeholder='email' onChangeText={(text)=>{setEmail(text)}}/> 
+          <Button title="Register" onPress={async()=>await sendUser(user)}/>
+        
+          <Text> {user!=null?(user.firstName+"   "+user.lastName+"   "+user.email):""} </Text>
     </View>
   )
 }
-
+const styles = StyleSheet.create({
+  input:{
+      padding:12,
+      margin:12
+  }
+})
 export default LoginScreen

@@ -1,31 +1,19 @@
-import { View, Text } from 'react-native'
+import { View, Text,TextInput,StyleSheet,Button } from 'react-native'
 import {useState,useEffect} from 'react'
 import {  useGetUser } from '../config/Database';
 
 const ConfigScreen = () => {
   const [user,setUser]=useState(null);
-
-
-  // const setuser=useCallback(async() => {
-       
-  //   },
-  //   [user],
-  // )
-
-  useEffect(async() => {
-   // const user=await useGetUser();
-    setUser(await useGetUser())
-    //console.log(user)
- 
- }, [])
-
-
+    useEffect(async() => {
+        setUser(await useGetUser());
+    }, [])
+    
   
   return (
-    <View>
-      
+    <View> 
       <Text>Hello I am the Config Screen</Text>
-      <Text>{user!=null?user.firstName+"   "+user.lastName+"   "+user.email:"no user"}</Text>
+      
+      <Text>{user!=null?user.firstName+"   "+user.lastName+"   "+user.email+"   id:"+user.id:"no user"}</Text>
     </View>
   )
 }

@@ -8,13 +8,14 @@ const NavBar={
     Home:{
         screen:HomeStack
     },
+   
+    Config:{
+        screen:ConfigStack
+    },
     About:{
         screen:AboutStack
     },
   
-    Config:{
-        screen:ConfigStack
-    }
 
 }
 const NavigationDrawer=createDrawerNavigator(NavBar)

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {  Text, View,TextInput,StyleSheet,ScrollView} from 'react-native'
+import {  Text, View,TextInput,StyleSheet,ScrollView, TouchableOpacity} from 'react-native'
 import Post from '../components/Post'
 import useGetPosts from '../hooks/useGetPosts'
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -9,7 +9,6 @@ function PostsScreen({navigation}) {
     const [posts,setPosts]=useState([])
     const [isLoading,setIsLoading]=useState(true)
     const [query,setQuery]=useState("")
-    const [addPostWindow,setAddPostWindow]=useState(false)
     const searchByTag=async(tag)=>{
       setIsLoading(true)
       const fetchedPosts= await useGetPosts(`https://dummyapi.io/data/v1/tag/${tag}/post`);
@@ -22,21 +21,21 @@ function PostsScreen({navigation}) {
         const fetchedPosts= await useGetPosts(url);
         setPosts(fetchedPosts.data);
         setIsLoading(false)
-       // setTimeout(()=> console.log(fetchedPosts.data),1000)
-      
+
+        return ()=>setPosts([])
         //erroe handling for fetching posts
     },[])
 //check if we can pass an entir object as param to the navigation
     const viewPost=(post_id)=>{
       navigation.navigate("ViewPost",{post_id:post_id})
   }
-    const renderItem = ({ post }) =><Post post={post}/>
+   // const renderItem = ({ post }) =><Post post={post}/>
   return (
 
     <View style={styles.container}>
       <View style={styles.toolsBar}>
           <View style={styles.search}>
-                <TextInput placeholder='Search posts' onChangeText={async(tag)=>{
+                <TextInput style={styles.searchText} placeholder='Search posts' onChangeText={async(tag)=>{
                   if(tag==""){
                     setIsLoading(true)
                     const fetchedPosts= await useGetPosts(url);
@@ -49,13 +48,9 @@ function PostsScreen({navigation}) {
                   }}/> 
                 {/* il reste le cas ou input est vide */}
           </View>
-          <View style={styles.addPost}>
-              <Icon size={23} name="post-add" onPress={()=>navigation.navigate("CreatePost")} /> 
-              {/* <Modal visible={addPostWindow}>
-                <Icon name="close" size={20} onPress={()=>setAddPostWindow(false)}></Icon>
-
-              </Modal> */}
-          </View>
+          <TouchableOpacity onPress={()=>navigation.navigate("CreatePost")} style={styles.addPost}>
+              <Icon size={23} name="post-add"  /> 
+          </TouchableOpacity>
           
       </View>
 
@@ -78,9 +73,9 @@ const styles = StyleSheet.create({
               padding:5
             },
             toolsBar:{
-             padding:6,
+             padding:9,
               backgroundColor:'#eee',
-             // margin:20,
+            
               alignItems:'center',
               flexDirection:'row',
             
@@ -88,12 +83,20 @@ const styles = StyleSheet.create({
 
             },
             addPost:{
-              width:'20%',
+            
+              backgroundColor:'blue',
+              padding:7
 
             },
             search:{
-              width:'70%'
+              marginRight:9
+      
 
+            },
+            searchText:{
+              padding:5,
+              fontSize:18,
+             
             },
             isLoading:{
               flex:1,
