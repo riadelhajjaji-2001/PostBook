@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, SafeAreaView, Text, View } from 'react-native'
+import {  Text, View,TextInput,StyleSheet,ScrollView} from 'react-native'
 import Post from '../components/Post'
 import useGetPosts from '../hooks/useGetPosts'
-import {FlatList,TextInput,StyleSheet} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ScrollView } from 'react-native-web'
+
 function PostsScreen({navigation}) {
     const url="https://dummyapi.io/data/v1/post?page=1&limit=10"
     const [posts,setPosts]=useState([])
@@ -57,14 +56,10 @@ function PostsScreen({navigation}) {
 
               </Modal> */}
           </View>
-          <Text>{query}</Text>
+          
       </View>
 
-      {/* {console.log(posts)}
-        <FlatList data={posts}
-            keyExtractor={post=>post.id}
-            renderItem={renderItem}
-        /> */}
+     
         <View style={styles.container}>
             <ScrollView style={styles.container}>
                 {!isLoading?
@@ -79,7 +74,8 @@ function PostsScreen({navigation}) {
 export default PostsScreen
 const styles = StyleSheet.create({
             container:{
-              flex:1
+              flex:1,
+              padding:5
             },
             toolsBar:{
              padding:6,
@@ -87,12 +83,12 @@ const styles = StyleSheet.create({
              // margin:20,
               alignItems:'center',
               flexDirection:'row',
-              gap:'10%',
+            
               alignContent:'space-between'
 
             },
             addPost:{
-              width:'20%'
+              width:'20%',
 
             },
             search:{

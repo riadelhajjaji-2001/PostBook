@@ -1,6 +1,6 @@
-import { View, Text, Image,StyleSheet } from 'react-native'
+import { View, Text, Image,StyleSheet, TouchableOpacity} from 'react-native'
 import React, { useState } from 'react'
-import { TouchableOpacity } from 'react-native'
+
 
 
 
@@ -73,25 +73,25 @@ const styles = StyleSheet.create({
         borderRadius:30,
         width:55,
         height:55,
-        float:'left'
+      
     },
     PostImage:{
             height:130,
             width:100,
-            float:'left',
+            
             
     },
     postText:{
 
         marginBottom:14,
-        wordWrap:'wrap',
+      
         maxWidth:'90%',
         paddingTop:6
     },
     postTags:{
        flexWrap:'wrap',
         flexDirection:'row',
-        gap:2
+        
     },
     postTag:{
         backgroundColor:'yellow',
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         
     },
     TextAndTags:{
-        float:'left',
+       
         width:'50%',
         marginLeft:21
 

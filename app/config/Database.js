@@ -1,0 +1,27 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+export const useSetUser=async(user)=>{
+    await  AsyncStorage.removeItem('user')
+    await  AsyncStorage.setItem('user',JSON.stringify(user))
+    console.log("the user is saved")
+}
+export const useGetUser=async()=>{
+    const userData=await AsyncStorage.getItem("user");
+    const user=JSON.parse(userData)
+    console.log(userData)
+    console.log(user)
+    return user;
+    
+}
+
+export const setName=async(name)=>{
+    await AsyncStorage.setItem('name',name)
+    console.log("the user is saved")
+}
+export const getName=async()=>{
+    const userData=await AsyncStorage.getItem("name");
+   // const user=JSON.parse(userData)
+   console.log(userData)
+   return userData
+    
+
+}

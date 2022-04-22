@@ -5,6 +5,7 @@ import AboutStack from './app/routes/AboutStack';
 import ConfigStack from './app/routes/ConfigStack';
 import HomeStack from './app/routes/HomeStack';
 import NavigationDrawer from './app/routes/NavigationDrawer';
+import LoginScreen from './app/screens/LoginScreen';
 import PostsScreen from './app/screens/PostsScreen'
 import ViewPostScreen from './app/screens/ViewPostScreen';
 export default function App() {
