@@ -42,7 +42,7 @@ function PostsScreen({navigation}) {
                     setPosts(fetchedPosts.data);
                     setIsLoading(false)
                 }else{
-                  searchByTag(tag)
+                  await searchByTag(tag)
                   setQuery(tag)
                 }
                   }}/> 
@@ -55,7 +55,7 @@ function PostsScreen({navigation}) {
       </View>
 
      
-        <View style={styles.container}>
+        <View style={styles.Postcontainer}>
             <ScrollView style={styles.container}>
                 {!isLoading?
                 posts.map((post)=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} key={post.id}/>):<Text style={styles.isLoading}>Loading...</Text>
@@ -70,26 +70,29 @@ export default PostsScreen
 const styles = StyleSheet.create({
             container:{
               flex:1,
-              padding:5
+              marginTop:30,
+              padding:2
             },
             toolsBar:{
-             padding:9,
-              backgroundColor:'#eee',
+              padding:9,
+             // backgroundColor:'blue',
             
               alignItems:'center',
               flexDirection:'row',
-            
               alignContent:'space-between'
 
             },
             addPost:{
             
-              backgroundColor:'blue',
-              padding:7
+            // backgroundColor:'blue',
+              padding:7,
+              width:'12%'
 
             },
             search:{
-              marginRight:9
+              marginRight:9,
+              width:"70%",
+            //  backgroundColor:'blue'
       
 
             },
@@ -101,5 +104,14 @@ const styles = StyleSheet.create({
             isLoading:{
               flex:1,
               backgroundColor:"#eee"
+            },
+            Postcontainer:{
+             // backgroundColor:'red',
+              flex:1,
+              padding:6
+
+
+
+
             }
 })

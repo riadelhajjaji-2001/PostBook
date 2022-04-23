@@ -10,7 +10,13 @@ const CreatePostScreen = () => {
     const [post,setPost]=useState({})
 
     useEffect(async()=>{
-        await useGetUser().then((u)=>setOwner(u.id)).then(
+        await useGetUser().then((u)=>{
+            if(u){
+            setOwner(u.id)    
+        }else{
+                return new Error("no user loged in")
+        }}
+            ).then(
                     setPost({
                             image: image,
                             link: "https://www.behance.net/claudia_udrea",//optional
@@ -40,8 +46,6 @@ const CreatePostScreen = () => {
             if(!res){
                 console.log(res)
             }
-            
-            const data=await res.json();
             
     }
   return (
