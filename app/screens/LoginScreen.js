@@ -1,6 +1,6 @@
 
 import { View, Text,TextInput,StyleSheet,Button } from 'react-native'
-import {React ,useState,useEffect, useCallback} from 'react'
+import {React ,useState,useEffect} from 'react'
 import { useSetUser } from '../config/Database';
 const LoginScreen = ({navigation}) => {
 
