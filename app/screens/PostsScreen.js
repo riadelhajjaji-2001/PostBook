@@ -35,7 +35,7 @@ function PostsScreen({navigation}) {
     <View style={styles.container}>
       <View style={styles.toolsBar}>
           <View style={styles.search}>
-                <TextInput style={styles.searchText} placeholder='Search posts' onChangeText={async(tag)=>{
+                {/* <TextInput style={styles.searchText} placeholder='Search posts' onChangeText={async(tag)=>{
                   if(tag==""){
                     setIsLoading(true)
                     const fetchedPosts= await useGetPosts(url);
@@ -45,7 +45,7 @@ function PostsScreen({navigation}) {
                   await searchByTag(tag)
                   setQuery(tag)
                 }
-                  }}/> 
+                  }}/>  */}
                 {/* il reste le cas ou input est vide */}
           </View>
           <TouchableOpacity onPress={()=>navigation.navigate("CreatePost")} style={styles.addPost}>
