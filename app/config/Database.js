@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ScyclicStruc from '../hooks/ScyclicStruc'
 export const useSetUser=async(user)=>{
     await  AsyncStorage.removeItem('user')
-    await  AsyncStorage.setItem('user',JSON.stringify(user))
+    await  AsyncStorage.setItem('user',JSON.stringify(user,ScyclicStruc()))
     console.log("the user is saved")
 
 }

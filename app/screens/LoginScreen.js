@@ -2,6 +2,7 @@
 import { View, Text,TextInput,StyleSheet,Button } from 'react-native'
 import {React ,useState,useEffect} from 'react'
 import { useSetUser } from '../config/Database';
+import ScyclicStruc from '../hooks/ScyclicStruc'
 const LoginScreen = ({navigation}) => {
 
   const [user, setUser] = useState(null);
@@ -20,7 +21,7 @@ const LoginScreen = ({navigation}) => {
             const  myInit={
                 method:'POST',
                 headers:myHeaders,
-                body:JSON.stringify(myuser),
+                body:JSON.stringify(myuser,ScyclicStruc),
             }
             console.log(myInit)
             

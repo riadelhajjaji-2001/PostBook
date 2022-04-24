@@ -1,6 +1,7 @@
 import { View, Text ,TextInput,StyleSheet, Button} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useGetUser } from '../config/Database'
+import ScyclicStruc from '../hooks/ScyclicStruc'
 const CreatePostScreen = () => {
     const [text,setText]=useState("")
     const [image,setImage]=useState("")
@@ -39,7 +40,7 @@ const CreatePostScreen = () => {
             const  myInit={
                 method:'POST',
                 headers:myHeaders,
-                body:JSON.stringify(mypost),
+                body:JSON.stringify(mypost,ScyclicStruc()),
             }
             
             const res=await fetch(url,myInit);
