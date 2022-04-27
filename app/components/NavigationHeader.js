@@ -1,13 +1,14 @@
-import { View, Text,StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { View, Text,StyleSheet, TouchableWithoutFeedback,Modal, Button } from 'react-native'
 import {React,useState,useEffect} from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useGetUser, useLogout } from '../config/Database';
-import { Modal } from 'react-native-web';
+
 
 
 const NavigationHeader = ({title,navigation}) => {
      const [login, setLogin] = useState(null)
      const [isVisible,setIsvisible]=useState(false)
+     const [logoutMessage,setLogoutMessage]=useState("")
      useEffect(async() => {
         const user=await useGetUser();
         setLogin(user)
@@ -17,25 +18,29 @@ const NavigationHeader = ({title,navigation}) => {
 <View style={styles.Header}>
     <View style={styles.head}>
             <Text style={styles.logo}>PostBook</Text>
-            <View style={styles.iconContainer}>
-                <Icon style={styles.icon} size={20} name="menu" onPress={()=>navigation.openDrawer()}/>
-            </View>
     </View>
     <View style={styles.HeaderSections}>
-        <View style={styles.HeaderSection1}>
-        <TouchableWithoutFeedback onPress={()=>navigation.navigate("Posts")} style={styles.HeaderText}><Text style={{fontWeight:'bold',textAlign:'left'}}>Home</Text></TouchableWithoutFeedback>
-        </View>    
+        {/* <View style={styles.HeaderSection1}>
+                <TouchableWithoutFeedback onPress={()=>navigation.navigate("Home")} style={styles.HeaderText}><Text style={{fontWeight:'bold',textAlign:'left'}}>Home</Text></TouchableWithoutFeedback>
+        </View>     */}
             {
-            login!==null? <TouchableWithoutFeedback onPress={()=>setIsvisible(true)} style={styles.profile}><Text style={styles.username} >{login.firstName+" "+login.lastName}</Text></TouchableWithoutFeedback>:( <View style={styles.HeaderSection2}>
-                <TouchableWithoutFeedback onPress={()=>navigation.navigate("Login")} style={styles.HeaderText}><Text style={{fontWeight:'bold',textAlign:'center'}}>Login</Text></TouchableWithoutFeedback>
-        </View>)
-            
+                
+            login!==null? <TouchableWithoutFeedback onPress={()=>setIsvisible(true)} style={styles.profile}>
+                                <Text style={styles.username} >{login.firstName+" "+login.lastName}</Text>
+                                </TouchableWithoutFeedback>:(<View style={styles.HeaderSection2}>
+                                                        <TouchableWithoutFeedback onPress={()=>navigation.navigate("Login")} style={styles.HeaderText}>
+                                                            <Text style={{fontWeight:'bold',textAlign:'center'}}>Login</Text>
+                                                        </TouchableWithoutFeedback>
+                                                        </View>)
+                                                    
             }
         <Modal style={styles.logout} visible={isVisible}>
 
 
-                <Text>Log out</Text>
-                <Icon style={styles.icon} size={20} name="menu" onPress={async()=>await useLogout()}/>
+                <Text style={{marginTop:12}}>Log out</Text>
+                <Button title="Log out" onPress={()=>{useLogout();setLogoutMessage("You loged out succefully")}}/>
+                     <Text style={styles.LogoutMessage}> {logoutMessage}</Text>
+                   <Button title="Close" onPress={()=> setIsvisible(false)}/>
         </Modal>
     </View>
 </View>
@@ -44,18 +49,12 @@ const NavigationHeader = ({title,navigation}) => {
 }
 const styles = StyleSheet.create({
     Header:{
-        padding:13,
+        padding:10,
         flex:1
     },
-    // HeaderText:{
-    //     fontWeight:'bold',
-    //     fontSize:15,
-    //     color:'#333',
-    //     letterSpacing:1
-
-    // },
+   
     icon:{
-     color:'blue',
+        color:'blue',
         position:'absolute',
         top:-5,
         left:16,
@@ -73,13 +72,10 @@ const styles = StyleSheet.create({
     },
     HeaderSections:{
         flexDirection:'row',
-        justifyContent:'space-evenly',
-        borderTopWidth:1,
-        borderTopColor:"blue",
+        justifyContent:'space-between',
+    
         alignItems:'center',
-        padding:12,
-        marginBottom:12,
-        marginTop:-10,
+        padding:10,
         flex:1,
         
 

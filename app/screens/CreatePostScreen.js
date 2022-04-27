@@ -1,6 +1,7 @@
 import { View, Text ,TextInput,StyleSheet, Button} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useGetUser } from '../config/Database'
+import getCircularReplacer from '../hooks/ScyclicStruc'
 const CreatePostScreen = () => {
     const [text,setText]=useState("")
     const [image,setImage]=useState("")
@@ -8,20 +9,21 @@ const CreatePostScreen = () => {
     const [tags,setTags]=useState([])
     const [owner,setOwner]=useState('')
     const [post,setPost]=useState({})
+    const [test,setTest]=useState("")
 
     useEffect(async()=>{
-        await useGetUser().then((u)=>setOwner(u.id)).then(
-                    setPost({
+         setOwner(await useGetUser())
+         setPost({
                             image: image,
                             link: "https://www.behance.net/claudia_udrea",//optional
                             tags: [
                             ...tags
                             ],
                             text:text,
-                        
-                            owner: owner
-                }))
-        //  "6261f48d66f8f961bb3a6aa5"
+                            owner: "6261f48d66f8f961bb3a6aa5"
+                })
+               
+        //  ""
     },[text,tags,link,owner,image])
 
     const url="https://dummyapi.io/data/v1/post/create"
@@ -33,25 +35,26 @@ const CreatePostScreen = () => {
             const  myInit={
                 method:'POST',
                 headers:myHeaders,
-                body:JSON.stringify(mypost),
-            }
-            
+                body:JSON.stringify(mypost,getCircularReplacer()),
+            } 
             const res=await fetch(url,myInit);
-            if(!res){
+            if(!res.ok){
+                console.log("posting request failed")
                 console.log(res)
             }
             
-            const data=await res.json();
+
             
     }
   return (
     <View style={styles.container}>
         <Text>Write Something</Text>
-        <TextInput style={styles.input} placeholder='write text' onChangeText={(text)=>{setText(text)}}/> 
-        <TextInput style={styles.input} placeholder='add an image' onChangeText={(image)=>{setImage(image)}}/> 
-        <TextInput style={styles.input} placeholder='add tags posts' onChangeText={(tags)=>{setTags(tags.split(" ").filter(tag=>tag!=''))}}/> 
+        <TextInput style={styles.input} placeholder='write text' onChangeText={(text)=>setText(text)}/> 
+        <TextInput style={styles.input} placeholder='add an image' onChangeText={(image)=>setImage(image)}/> 
+        <TextInput style={styles.input} placeholder='add tags posts' onChangeText={(tags)=>setTags(tags.split(" ").filter(tag=>tag!=''))}/> 
         {/* <TextInput style={styles.input} placeholder='your id' onChangeText={(id)=>{setOwner(id)}}/>  */}
-        <Button title='Post' onPress={()=>sendPost(post)}/>
+        <Button title='Post' onPress={async()=>await sendPost(post)}/>
+    <Text>{test}</Text>
     </View>)
      
     

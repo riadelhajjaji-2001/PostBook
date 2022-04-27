@@ -21,21 +21,20 @@ const postd={
       "picture": "https://randomuser.me/api/portraits/med/men/3.jpg"
   }
 }
-const ViewPostScreen = ({ navigation }) => {
-  const id=navigation.getParam('post_id')
-  //console.log(id)
+const ViewPostScreen = ({ route,navigation }) => {
+  const {id}=route.params
+  console.log(id)
   const url=`https://dummyapi.io/data/v1/post/${id}`
   const [post,setPost]=useState(null)
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading,setIsLoading]=useState(true)
   useEffect(async()=>{
     setIsLoading(true)
     const fetchedPosts= await useGetPosts(url);
     console.log(fetchedPosts)
     setIsLoading(false)
-     setPost(fetchedPosts)
-     
-     //return ()=>setPost(null)
-},[])
+    setPost(fetchedPosts)
+    
+},[id])
 
 
 

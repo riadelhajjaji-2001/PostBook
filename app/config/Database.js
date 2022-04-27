@@ -6,10 +6,8 @@ export const useSetUser=async(user)=>{
 
 }
 export const useGetUser=async()=>{
-    const userData=await AsyncStorage.getItem("user");
-    const user=JSON.parse(userData)
-    console.log(user)
-    return user;
+    const user=await AsyncStorage.getItem("user");
+    return await JSON.parse(user);
     
 }
 
@@ -17,15 +15,3 @@ export const useLogout=async()=>{
   await AsyncStorage.removeItem("user");
 }
 
-export const setName=async(name)=>{
-    await AsyncStorage.setItem('name',name)
-    console.log("the user is saved")
-}
-export const getName=async()=>{
-    const userData=await AsyncStorage.getItem("name");
-   // const user=JSON.parse(userData)
-   console.log(userData)
-   return userData
-    
-
-}
