@@ -19,6 +19,11 @@ const Post = ({post,tagQ,OnPress}) => {
             <View>
             <Text style={styles.userName}>{post.owner.title}. {post.owner.firstName} {post.owner.lastName}</Text>
             <Text style={styles.postDate}>{post.publishDate}</Text>
+             {/* {
+         post.owner.picture==='undefined'?
+           <Image source={require("../shared/avatar.png")}  style={styles.userImage}/>:
+            <Image source={{uri:JSON.stringify(post.owner.picture)}}  style={styles.userImage}/>
+          } */}
             </View>
         </View>
       

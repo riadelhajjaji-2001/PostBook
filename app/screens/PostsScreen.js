@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
             },
             Postcontainer:{
             
-              // flex:1,
+               flex:1,
               padding:10,
               paddingTop:0
 
