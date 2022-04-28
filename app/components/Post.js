@@ -1,8 +1,6 @@
 import { View, Text, Image,StyleSheet, TouchableOpacity} from 'react-native'
 import React, { useState } from 'react'
-
-
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Post = ({post,tagQ,OnPress}) => {
     const deletePost=async(posIid)=>{
@@ -12,22 +10,19 @@ const Post = ({post,tagQ,OnPress}) => {
         await fetch(url,{headers:myHeaders, method:"DELETE"}).then(res=>setIsDeleted(true))
         setTimeout(()=>setDisapear(true),2000)
     }
-    //  const viewPost=(mypost)=>{
-    //      navigation.navigate("ViewPost",mypost)onPress={()=>viewPost(post)}
-    //  }
     const [isDeleted,setIsDeleted]=useState(false)
     const [disapear,setDisapear]=useState(false)
   return (
     !isDeleted? <TouchableOpacity style={styles.postContainer} onPress={OnPress}  onLongPress={()=>deletePost(post.id)} >
         <View style={styles.userInfo}>
-            <Image source={{uri:post.owner.picture}}  style={styles.userImage}/>
+            <Image source={{uri:JSON.stringify(post.owner.picture)}}  style={styles.userImage}/>
             <View>
             <Text style={styles.userName}>{post.owner.title}. {post.owner.firstName} {post.owner.lastName}</Text>
             <Text style={styles.postDate}>{post.publishDate}</Text>
             </View>
         </View>
       
-          <Image source={{uri:post.image}}  style={styles.PostImage}/>
+          <Image source={{uri:JSON.stringify(post.image)}}  style={styles.PostImage}/>
           <View style={styles.TextAndTags}>
             <Text style={styles.postText}>{post.text}</Text>
             <View style={styles.postTags}>
@@ -35,6 +30,12 @@ const Post = ({post,tagQ,OnPress}) => {
                     <Text style={[styles.postTag,(tagQ==post.tags[1])?{backgroundColor:'red'}:null]}>{post.tags[1]}</Text>
                     <Text style={[styles.postTag,(tagQ==post.tags[2])?{backgroundColor:'red'}:null]}>{post.tags[2]}</Text>
             </View>
+            {/* <View>
+                <View>
+                    <Icon size={23} name="menu" onPress={()=>{}}/>
+                    <Text>{post.likes}</Text>
+                </View>
+            </View> */}
           </View>
       
     </TouchableOpacity>:disapear?null:<View style={styles.postContainer}><Text>The post was deleted</Text></View>

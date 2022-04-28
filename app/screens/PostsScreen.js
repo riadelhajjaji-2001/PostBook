@@ -3,13 +3,14 @@ import {  Text, View,TextInput,StyleSheet,ScrollView, TouchableOpacity, FlatList
 import Post from '../components/Post'
 import useGetPosts from '../hooks/useGetPosts'
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import NavigationHeader from '../components/NavigationHeader';
+import TopHeader from '../components/TopHeader';
  const url="https://dummyapi.io/data/v1/post?page=1&limit=10"
 function PostsScreen({navigation}) {
   //  state
     const [posts,setPosts]=useState([])
     const [isLoading,setIsLoading]=useState(true)
     const [query,setQuery]=useState("")
+    const [track,setTrack]=useState(0)
   //state
     const searchByTag=async(tag)=>{
         setIsLoading(true)
@@ -30,6 +31,7 @@ function PostsScreen({navigation}) {
     const viewPost=(post_id)=>{
       navigation.navigate("ViewPost",{id:post_id})
   }
+  const keepTrack=()=>setTrack(track+1)
   const handleSearchByTag=async(tag)=>{
               if(tag==""){
                 setIsLoading(true)
@@ -42,11 +44,11 @@ function PostsScreen({navigation}) {
             }
               }
   const renderItem=(post)=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} key={post.id}/>
-  
+  //reeeeeeeeeendreing
   return (
 
     <View style={styles.container}>
-
+      <TopHeader navigation={navigation}/>
 
       <View style={styles.toolsBar}>
           <View style={styles.search}>
@@ -54,7 +56,7 @@ function PostsScreen({navigation}) {
                 {/* il reste le cas ou input est vide */}
           </View>
           <TouchableOpacity onPress={()=>navigation.navigate("CreatePost")} style={styles.addPost}>
-              <Icon size={23} name="post-add"  /> 
+              <Icon size={28} name="post-add"  /> 
           </TouchableOpacity>
           
       </View>
@@ -68,15 +70,17 @@ function PostsScreen({navigation}) {
                 }
             </ScrollView>
 
-
-              {/* <SafeAreaView style={styles.container}>
+{/* 
+              <SafeAreaView style={styles.container}>
 
               <FlatList
-                    data={posts}
-                    renderItem={renderItem}
-                    keyExtractor={(post)=>post.id}
+                    // data={posts}
+                    // renderItem={renderItem}
+                    // keyExtractor={(post)=>post.id}
                 
-                
+                  data={[1,2,3,4,5]}
+                   renderItem={(e)=><Text>{e}</Text>}
+                     keyExtractor={(post)=>post}
                 
                 />
               </SafeAreaView> */}
@@ -99,12 +103,11 @@ export default PostsScreen
 const styles = StyleSheet.create({
             container:{
               flex:1,
-              marginTop:30,
+              backgroundColor:"#fff",
               padding:2
             },
             toolsBar:{
-              padding:9,
-             // backgroundColor:'blue',
+             
             
               alignItems:'center',
               flexDirection:'row',
@@ -115,18 +118,19 @@ const styles = StyleSheet.create({
             
             // backgroundColor:'blue',
               padding:7,
-              width:'12%'
+            
 
             },
             search:{
               // marginRight:9,
               // width:"70%",
             //  backgroundColor:'blue'
-      
+                margin:3
 
             },
             searchText:{
-              // padding:5,
+               padding:5,
+               marginRight:23
               // fontSize:18,
              
             },
@@ -135,11 +139,10 @@ const styles = StyleSheet.create({
               backgroundColor:"#eee"
             },
             Postcontainer:{
-             // backgroundColor:'red',
-              flex:1,
-              padding:6
-
-
+            
+              // flex:1,
+              padding:10,
+              paddingTop:0
 
 
             }

@@ -22,8 +22,11 @@ const NavContainer = () => {
                     options={({navigation})=>( {
                       headerTitle:()=><NavigationHeader navigation={navigation}/>,
                       headerStyle: {
-                      //  backgroundColor: '#f4511e',
+                       height:40,
+                   
+                       
                       },
+                      
                       headerTintColor: '#fff',
                       headerTitleStyle: {
                         fontWeight: 'bold',

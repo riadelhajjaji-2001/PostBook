@@ -46,9 +46,12 @@ const LoginScreen = ({navigation}) => {
           <TextInput style={styles.input} placeholder='first name' onChangeText={(text)=>{setFirstname(text)}}/> 
           <TextInput style={styles.input} placeholder='last name' onChangeText={(text)=>{setLastname(text)}}/> 
           <TextInput style={styles.input} placeholder='email' onChangeText={(text)=>{setEmail(text)}}/> 
-          <Button title="Register" onPress={()=> sendUser(user)}/>
+          <Button title="Register" onPress={()=> 
+            sendUser(user)
+           }/>
         
           <Text> {user!=null?(user.firstName+"   "+user.lastName+"   "+user.email):""} </Text>
+          <Button title="Return to Home" onPress={()=>navigation.navigate("Home")}/>
     </View>
   )
 }
