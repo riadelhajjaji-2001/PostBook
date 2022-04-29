@@ -22,8 +22,9 @@ const Post = ({post,tagQ,OnPress}) => {
              {/* {
          post.owner.picture==='undefined'?
            <Image source={require("../shared/avatar.png")}  style={styles.userImage}/>:
-            <Image source={{uri:JSON.stringify(post.owner.picture)}}  style={styles.userImage}/>
+           
           } */}
+           <Image source={{uri:post.owner.picture}}  style={styles.userImage}/>
             </View>
         </View>
       
