@@ -1,5 +1,5 @@
 
-import { View, Text,TextInput,StyleSheet,Button } from 'react-native'
+import { View, Text,TextInput,StyleSheet,Button, Pressable } from 'react-native'
 import {React ,useState,useEffect, useCallback} from 'react'
 import { useSetUser } from '../config/Database';
 import getCircularReplacer from '../hooks/ScyclicStruc'
@@ -34,7 +34,7 @@ const LoginScreen = ({navigation}) => {
             await useSetUser(data)
             setUser(data);
     }
-    //const createUser=useCallback(async()=>await sendUser(user),[user])
+
  
   useEffect(() => {
      setUser({firstName:firstname,lastName:lastname,email:email})
@@ -42,23 +42,60 @@ const LoginScreen = ({navigation}) => {
   }, [firstname,lastname,email])
  
   return (
-    <View>
-          <TextInput style={styles.input} placeholder='first name' onChangeText={(text)=>{setFirstname(text)}}/> 
-          <TextInput style={styles.input} placeholder='last name' onChangeText={(text)=>{setLastname(text)}}/> 
-          <TextInput style={styles.input} placeholder='email' onChangeText={(text)=>{setEmail(text)}}/> 
-          <Button title="Register" onPress={()=> 
-            sendUser(user)
-           }/>
-        
-          <Text> {user!=null?(user.firstName+"   "+user.lastName+"   "+user.email):""} </Text>
-          <Button title="Return to Home" onPress={()=>navigation.navigate("About",{skip:true})}/>
+    <View style={styles.container}>
+         <View style={styles.inputs}>
+            <TextInput style={styles.input} placeholder='First name' onChangeText={(text)=>{setFirstname(text)}}/> 
+            <TextInput style={styles.input} placeholder='Last name' onChangeText={(text)=>{setLastname(text)}}/> 
+            <TextInput style={styles.input} placeholder='Email' onChangeText={(text)=>{setEmail(text)}}/> 
+            <View style={styles.register}><Button title="Register" onPress={async()=>{
+              await sendUser(user)
+            navigation.navigate("About",{skip:true})}}/></View>
+         </View>
+            <View style={styles.home}>
+                <Pressable >
+                      <Button title='X' onPress={()=>navigation.navigate("About",{skip:true})}/>
+                </Pressable>
+            </View>
     </View>
   )
 }
 const styles = StyleSheet.create({
+  container:{
+    flex:1,
+    alignItems:'center'
+  },
   input:{
-      padding:12,
-      margin:12
-  }
+
+    padding:15,
+    margin:12,
+    borderWidth:1
+} ,
+  home:{
+      backgroundColor:'rgba(0,0,0,0.5)',
+      width:34,
+      height:34,
+      borderRadius:100,
+      fontSize:25,
+      fontWeight:'bold',
+      alignItems:'center',
+      color:"#fff",
+      shadowRadius:6,
+      shadowColor:'blue',
+      borderWidth:1,
+      justifyContent:'center'
+},
+  inputs:{
+    
+    marginTop:80,
+    marginBottom:120,
+    width:'86%',
+    padding:10
+
+    
+},
+register:{
+  width:'95%',
+  paddingLeft:10
+}
 })
 export default LoginScreen

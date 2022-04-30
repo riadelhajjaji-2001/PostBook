@@ -37,11 +37,12 @@ const NavContainer = () => {
                   }
             
             />
-            <Stack.Screen name="CreatePost" component={CreatePostScreen}/>
-            <Stack.Screen name="Config" component={ConfigScreen}/>
+            <Stack.Screen name="CreatePost" component={CreatePostScreen} options={{title:"Add a post"}}/>
+            <Stack.Screen name="Config" component={ConfigScreen}  options={{title:"Setting"}}/>
             
             <Stack.Screen name="Login" component={LoginScreen}/>
-            <Stack.Screen name="ViewPost" component={ViewPostScreen}/>
+            <Stack.Screen name="ViewPost" component={ViewPostScreen}  options={{title:"Post"}
+          }/>
            
     </Stack.Navigator>
 

@@ -1,4 +1,4 @@
-import { View, Text ,TextInput,StyleSheet, Button, Pressable, Image} from 'react-native'
+import { View,Text ,TextInput,StyleSheet, Button, Pressable, Image} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useGetUser } from '../config/Database'
 import getCircularReplacer from '../hooks/ScyclicStruc'
@@ -62,14 +62,17 @@ const CreatePostScreen = ({navigation}) => {
             <Text style={styles.username}>{owner.firstName+" "+owner.lastName}</Text>
         </View>
         <View style={styles.inputs}>
-            <TextInput style={styles.input} placeholder='write text' onChangeText={(text)=>setText(text)}/> 
+            <TextInput style={[styles.input,styles.postText]} placeholder='write text' onChangeText={(text)=>setText(text)}/> 
             <TextInput style={styles.input} placeholder='add an image' onChangeText={(image)=>setImage(image)}/> 
             <TextInput style={[styles.input,styles.lastInput]} placeholder='tag1 tag2 tag3' onChangeText={(tags)=>setTags(tags.split(" ").filter(tag=>tag!=''))}/>
-            <Button style={styles.post} title="Post"  onPress={async()=>await sendPost(post)}/>
+            <Button style={styles.post} title="Post"  onPress={async()=>{
+                await sendPost(post)
+                navigation.navigate("About",{skip:true})
+                }}/>
        </View>
-        <Pressable style={styles.home} onPress={()=>navigation.navigate("Home")}>
+        {/* <Pressable style={styles.home} onPress={()=>navigation.navigate("Home")}>
             <Text>Return to Home</Text>
-            </Pressable>
+            </Pressable> */}
     </View>):<View style={styles.fallback}><Text style={styles.fallbackText}>You must Log in</Text>
                  <Button title="Log in" onPress={()=>navigation.navigate("Login")}/>
             </View>
@@ -103,13 +106,15 @@ const styles = StyleSheet.create({
         shadowColor:'#000',
         shadowRadius:21,
         elevation:3,
-        padding:25,
+        padding:6,
         marginTop:29
         
     },
     input:{
-        padding:14,
-        margin:8
+        padding:10,
+        margin:8,
+        borderWidth:1,
+        borderColor:'blue'
     },
     lastInput:{
         marginBottom:20
@@ -120,10 +125,11 @@ const styles = StyleSheet.create({
     },
     home:{
         color:'blue',
-        width:140,
-        padding:14,
+        width:120,
+        padding:8,
         fontWeight:'bold',
         fontSize:12,
+        backgroundColor:'#bbb'
   },
   user:{
 
@@ -144,6 +150,10 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         color:'blue',
         marginBottom:12
+  },
+  postText:{
+      height:70,
+      paddingTop:0
   }
 
 })

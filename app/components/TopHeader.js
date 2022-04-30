@@ -35,15 +35,18 @@ const TopHeader = ({navigation}) => {
                                                         </View>)
                                                     
             }
-        <Modal style={styles.logout} visible={isVisible}>
+        <Modal  visible={isVisible}>
+            <View style={styles.logout}>
                 {
 
-login!==null?<View><Text style={{marginTop:12}}>Log out</Text>
-<Button title="Log out" onPress={()=>{useLogout();setLogoutMessage("You loged out succefully")}}/>
-<Text style={styles.LogoutMessage}> {logoutMessage}</Text>
-<Button title="Close" onPress={()=>setIsvisible(false)}/></View>:<LoginScreen  navigation={navigation}/>
+login!==null?<View>
+        <Button title="Log out" onPress={async()=>{await useLogout();navigation.navigate("About",{skip:true})}}/>
+        <Text style={styles.LogoutMessage}> {logoutMessage}</Text>
+       <View><Button color='#bbb'  title="Close" onPress={()=>setIsvisible(false)}/></View>
+</View>
+        :<View style={{flex:1,backgroundColor:'red'}}><LoginScreen navigation={navigation}/></View>
                 }
-               
+               </View>
         </Modal>
     </View>
 </View>
@@ -82,6 +85,8 @@ const styles = StyleSheet.create({
         textTransform:'uppercase'
     },
     logout:{
+        marginTop:200,
+        margin:100
         
     }
 

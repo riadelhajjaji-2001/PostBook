@@ -66,7 +66,7 @@ function PostsScreen({navigation}) {
 
             <ScrollView style={styles.container}>
                 {!isLoading?
-                posts.map((post)=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} key={post.id}/>):<Text style={styles.isLoading}>Loading...</Text>
+                posts.map((post)=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} key={post.id}/>):<View style={styles.isLoading}><Text style={styles.isLoadingText} >Loading...</Text></View>
                 }
             </ScrollView>
 
@@ -120,10 +120,12 @@ const styles = StyleSheet.create({
 
             },
             search:{
-              // marginRight:9,
-              // width:"70%",
-            //  backgroundColor:'blue'
-                margin:3
+                borderColor:'#000',
+                margin:3,
+                borderWidth:1,
+                width:230,
+                borderTopColor:'blue',
+                borderRightColor:'blue'
 
             },
             searchText:{
@@ -134,7 +136,17 @@ const styles = StyleSheet.create({
             },
             isLoading:{
               flex:1,
-              backgroundColor:"#eee"
+              justifyContent:'center',
+              alignItems:'center',
+              marginTop:120,
+              padding:30
+              
+            },
+            isLoadingText:{
+              flex:1,
+              fontWeight:'bold',
+              fontSize:16,
+              color:'rgba(0,0,0,0.5)'
             },
             Postcontainer:{
             
