@@ -1,12 +1,31 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, Button,StyleSheet } from 'react-native'
+import {React,useEffect} from 'react'
 
-const AboutScreen = () => {
+const AboutScreen = ({route,navigation}) => {
+ 
+  useEffect(() => {
+    
+    
+   // if(skip===true){
+      navigation.navigate('Home')
+    
+  }, [route])
+  
   return (
-    <View>
-      <Text>AboutScreen</Text>
+    <View style={styles.container}>
+      <Button title="Go to Home" onPress={()=>navigation.navigate("Home")}/>
+      
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container:{
+    flex:1,
+    justifyContent:'center',
+    padding:40
+  }
+})
+
 
 export default AboutScreen

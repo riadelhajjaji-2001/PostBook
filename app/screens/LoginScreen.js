@@ -51,7 +51,7 @@ const LoginScreen = ({navigation}) => {
            }/>
         
           <Text> {user!=null?(user.firstName+"   "+user.lastName+"   "+user.email):""} </Text>
-          <Button title="Return to Home" onPress={()=>navigation.navigate("Home")}/>
+          <Button title="Return to Home" onPress={()=>navigation.navigate("About",{skip:true})}/>
     </View>
   )
 }

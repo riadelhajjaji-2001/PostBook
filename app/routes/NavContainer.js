@@ -17,7 +17,9 @@ const NavContainer = () => {
             
     <Stack.Navigator
     >
-
+        <Stack.Screen name="About" component={AboutScreen} initialParams={
+          {skip:false}
+          }/>
         <Stack.Screen name="Home" component={PostsScreen}
                     options={({navigation})=>( {
                       headerTitle:()=><NavigationHeader navigation={navigation}/>,
@@ -29,7 +31,7 @@ const NavContainer = () => {
                       
                       headerTintColor: '#fff',
                       headerTitleStyle: {
-                        fontWeight: 'bold',
+                      fontWeight: 'bold',
                       },
                     })
                   }
@@ -37,7 +39,7 @@ const NavContainer = () => {
             />
             <Stack.Screen name="CreatePost" component={CreatePostScreen}/>
             <Stack.Screen name="Config" component={ConfigScreen}/>
-            <Stack.Screen name="About" component={AboutScreen}/>
+            
             <Stack.Screen name="Login" component={LoginScreen}/>
             <Stack.Screen name="ViewPost" component={ViewPostScreen}/>
            

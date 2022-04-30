@@ -107,11 +107,9 @@ const styles = StyleSheet.create({
               padding:2
             },
             toolsBar:{
-             
-            
               alignItems:'center',
               flexDirection:'row',
-              alignContent:'space-between'
+              justifyContent:'space-around'
 
             },
             addPost:{

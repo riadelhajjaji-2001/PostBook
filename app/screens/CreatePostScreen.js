@@ -1,4 +1,4 @@
-import { View, Text ,TextInput,StyleSheet, Button} from 'react-native'
+import { View, Text ,TextInput,StyleSheet, Button, Pressable, Image} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useGetUser } from '../config/Database'
 import getCircularReplacer from '../hooks/ScyclicStruc'
@@ -7,12 +7,21 @@ const CreatePostScreen = ({navigation}) => {
     const [image,setImage]=useState("")
     const [link,setLink]=useState("")
     const [tags,setTags]=useState([])
-    const [owner,setOwner]=useState('')
+    const [owner,setOwner]=useState({})
     const [post,setPost]=useState({})
-    const [test,setTest]=useState("")
+    //const [post,setPost]=useState({})
+
+
 
     useEffect(async()=>{
-         setOwner(await useGetUser())
+        const user=await useGetUser();
+        setOwner(user)
+       
+              
+   },[])
+
+    useEffect(async()=>{
+       //  setOwner(await useGetUser())
          setPost({
                             image: image,
                             link: "https://www.behance.net/claudia_udrea",//optional
@@ -20,7 +29,7 @@ const CreatePostScreen = ({navigation}) => {
                             ...tags
                             ],
                             text:text,
-                            owner: "6261f48d66f8f961bb3a6aa5"
+                            owner:owner.id//"6261f48d66f8f961bb3a6aa5"
                 })
                
        
@@ -46,28 +55,96 @@ const CreatePostScreen = ({navigation}) => {
 
             
     }
-  return (
+  return owner?(
     <View style={styles.container}>
-        <Text>Write Something</Text>
-        <TextInput style={styles.input} placeholder='write text' onChangeText={(text)=>setText(text)}/> 
-        <TextInput style={styles.input} placeholder='add an image' onChangeText={(image)=>setImage(image)}/> 
-        <TextInput style={styles.input} placeholder='add tags posts' onChangeText={(tags)=>setTags(tags.split(" ").filter(tag=>tag!=''))}/> 
-        {/* <TextInput style={styles.input} placeholder='your id' onChangeText={(id)=>{setOwner(id)}}/>  */}
-        <Button title="Post" onPress={async()=>await sendPost(post)}/>
-
-    <Text>{test}</Text>
-    <Button  title="Return to Home" onPress={()=>navigation.navigate("Home")}/>
-    </View>)
+        <View style={styles.owner}>
+            <Image style={styles.photo} source={require("../shared/avatar.png")}/>
+            <Text style={styles.username}>{owner.firstName+" "+owner.lastName}</Text>
+        </View>
+        <View style={styles.inputs}>
+            <TextInput style={styles.input} placeholder='write text' onChangeText={(text)=>setText(text)}/> 
+            <TextInput style={styles.input} placeholder='add an image' onChangeText={(image)=>setImage(image)}/> 
+            <TextInput style={[styles.input,styles.lastInput]} placeholder='tag1 tag2 tag3' onChangeText={(tags)=>setTags(tags.split(" ").filter(tag=>tag!=''))}/>
+            <Button style={styles.post} title="Post"  onPress={async()=>await sendPost(post)}/>
+       </View>
+        <Pressable style={styles.home} onPress={()=>navigation.navigate("Home")}>
+            <Text>Return to Home</Text>
+            </Pressable>
+    </View>):<View style={styles.fallback}><Text style={styles.fallbackText}>You must Log in</Text>
+                 <Button title="Log in" onPress={()=>navigation.navigate("Login")}/>
+            </View>
      
     
 }
 const styles = StyleSheet.create({
     container:{
-        flex:1
+        flex:1,
+        padding:10,
+        marginTop:20
+       
+    },
+    owner:{
+           // backgroundColor:'#eee',
+            alignItems:'center'
+           
+            
+    },
+    username:{
+            fontWeight:'bold'
+    },
+    photo:{
+            width:80,
+            height:80,
+            borderRadius:100
     },
 
+    inputs:{
+        marginBottom:40,
+        shadowColor:'#000',
+        shadowRadius:21,
+        elevation:3,
+        padding:25,
+        marginTop:29
+        
+    },
     input:{
-        padding:12
-    }
+        padding:14,
+        margin:8
+    },
+    lastInput:{
+        marginBottom:20
+    },
+    post:{
+        
+
+    },
+    home:{
+        color:'blue',
+        width:140,
+        padding:14,
+        fontWeight:'bold',
+        fontSize:12,
+  },
+  user:{
+
+  },
+  fallback:{
+      flex:1,
+      justifyContent:'center',
+      alignItems:'center',
+      shadowColor: 'black',
+      shadowOpacity: 0.9,
+      shadowOffset: { width: 0, height: 3},
+      shadowRadius: 10,
+      elevation: 2,
+      
+  },
+  fallbackText:{
+        padding:17,
+        fontWeight:'bold',
+        color:'blue',
+        marginBottom:12
+  }
+
 })
 export default CreatePostScreen

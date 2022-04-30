@@ -14,6 +14,7 @@ const TopHeader = ({navigation}) => {
      useEffect(async() => {
         const user=await useGetUser();
         setLogin(user)
+        
      }, [login])
      const hideLoginPage=()=>{
         setIsvisible(false)
@@ -40,7 +41,7 @@ const TopHeader = ({navigation}) => {
 login!==null?<View><Text style={{marginTop:12}}>Log out</Text>
 <Button title="Log out" onPress={()=>{useLogout();setLogoutMessage("You loged out succefully")}}/>
 <Text style={styles.LogoutMessage}> {logoutMessage}</Text>
-<Button title="Close" onPress={()=> setIsvisible(false)}/></View>:<LoginScreen navigation={navigation}/>
+<Button title="Close" onPress={()=>setIsvisible(false)}/></View>:<LoginScreen  navigation={navigation}/>
                 }
                
         </Modal>
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'flex-end',
         marginRight:12,
-       margin:5,
+        margin:5,
         alignItems:'flex-start',
       
 
