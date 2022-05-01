@@ -33,6 +33,7 @@ const LoginScreen = ({navigation}) => {
             const data=await res.json();
             await useSetUser(data)
             setUser(data);
+            navigation.navigate("About",{skip:true})
     }
 
  
@@ -49,13 +50,13 @@ const LoginScreen = ({navigation}) => {
             <TextInput style={styles.input} placeholder='Email' onChangeText={(text)=>{setEmail(text)}}/> 
             <View style={styles.register}><Button title="Register" onPress={async()=>{
               await sendUser(user)
-            navigation.navigate("About",{skip:true})}}/></View>
+            }}/></View>
          </View>
-            <View style={styles.home}>
-                <Pressable >
-                      <Button title='X' onPress={()=>navigation.navigate("About",{skip:true})}/>
+           
+                <Pressable style={styles.home} onPress={()=>navigation.navigate("About",{skip:true})}>
+                      <Text style={{color:'#00f'}}>X</Text>
                 </Pressable>
-            </View>
+           
     </View>
   )
 }
@@ -79,10 +80,11 @@ const styles = StyleSheet.create({
       fontWeight:'bold',
       alignItems:'center',
       color:"#fff",
-      shadowRadius:6,
+      shadowRadius:16,
       shadowColor:'blue',
       borderWidth:1,
-      justifyContent:'center'
+      justifyContent:'center',
+     
 },
   inputs:{
     

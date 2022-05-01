@@ -43,11 +43,12 @@ function PostsScreen({navigation}) {
               setQuery(tag)
             }
               }
+  const renderlist=({e})=><View><Text>{e.name}</Text></View>
   const renderItem=(post)=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} key={post.id}/>
   //reeeeeeeeeendreing
   return (
 
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TopHeader navigation={navigation}/>
 
       <View style={styles.toolsBar}>
@@ -71,16 +72,17 @@ function PostsScreen({navigation}) {
             </ScrollView>
 
 {/* 
-              <SafeAreaView style={styles.container}>
+              <SafeAreaView style={styles.FlatListContainer}>
 
               <FlatList
                     // data={posts}
                     // renderItem={renderItem}
                     // keyExtractor={(post)=>post.id}
                 
-                  data={[1,2,3,4,5]}
-                   renderItem={(e)=><Text>{e}</Text>}
-                     keyExtractor={(post)=>post}
+                  data={[{name:1},{name:2},{name:3},{name:4},{name:5}]}
+                  renderItem={renderlist}
+                     keyExtractor={(post)=>post.name}
+                     ItemSeparatorComponent={()=><Text>llllllll</Text>}
                 
                 />
               </SafeAreaView> */}
@@ -95,7 +97,7 @@ function PostsScreen({navigation}) {
 
 
         </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -155,5 +157,9 @@ const styles = StyleSheet.create({
               paddingTop:0
 
 
+            },
+            FlatListContainer:{
+              backgroundColor:'red',
+              flex:1
             }
 })
