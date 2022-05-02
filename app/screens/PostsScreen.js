@@ -4,7 +4,7 @@ import Post from '../components/Post'
 import useGetPosts from '../hooks/useGetPosts'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TopHeader from '../components/TopHeader';
- const url="https://dummyapi.io/data/v1/post?limit="
+
 function PostsScreen({navigation}) {
   //  state
     const [posts,setPosts]=useState([])
@@ -12,29 +12,37 @@ function PostsScreen({navigation}) {
     const [query,setQuery]=useState("")
     const [track,setTrack]=useState(0)
     const [Limit, setLimit] = useState(0)
+    const [page, setPage] = useState(0)
+    const [refresh, setRefresh] = useState(false)
+   
   //state
     const searchByTag=async(tag)=>{
         setIsLoading(true)
-        const fetchedPosts= await useGetPosts(`https://dummyapi.io/data/v1/tag/${tag}/post`);
+        const fetchedPosts= await useGetPosts(`https://dummyapi.io/data/v1/tag/${tag}/post`,5);
         if (fetchedPosts!==[]) {setPosts(fetchedPosts.data);
         setIsLoading(false)}
     }
   //  
     const fetchFivePosts=async()=>{
-
+      
       setIsLoading(true)
-      const fetchedPosts=await useGetPosts(url,Limit);
+      //setPage(page+1)
+      const fetchedPosts=await useGetPosts(page,Limit);
       setPosts(await fetchedPosts.data)
       setIsLoading(false)
     }
     const fetchMoreFivePosts=async()=>{
-      setLimit(Limit+5)
-      setIsLoading(true)
-      const fetchedPosts=await useGetPosts(url,Limit);
-      setPosts([posts,...await fetchedPosts.data])
+  
+      setRefresh(true)
+      setPage(page+1)
+      const fetchedPosts=await useGetPosts(page,Limit);
+      setPosts([...await fetchedPosts.data])
       setIsLoading(false)
+      setRefresh(false)
+     
     }
     useEffect(async()=>{
+        setPage(0)
         setLimit(5)
         await fetchFivePosts();
        
@@ -44,7 +52,7 @@ function PostsScreen({navigation}) {
     const viewPost=(post_id)=>{
       navigation.navigate("ViewPost",{id:post_id})
   }
-  const keepTrack=()=>setTrack(track+1)
+  
   const handleSearchByTag=async(tag)=>{
               setIsLoading(true)
               if(tag===""){
@@ -58,8 +66,8 @@ function PostsScreen({navigation}) {
               setIsLoading(false)
             }
               }
-  const renderlist=({e})=><View><Text>{e.name}</Text></View>
-  const renderItem=({item:post})=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} key={post.id}/>
+ 
+  const renderItem=({item:post})=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} />
   //reeeeeeeeeendreing
   return (
 
@@ -87,13 +95,12 @@ function PostsScreen({navigation}) {
                     data={posts}
                     renderItem={renderItem}
                     keyExtractor={(post)=>post.id}
-                   onEndReached={fetchMoreFivePosts}
-                
-                
+                    onEndReached={async()=>await fetchMoreFivePosts()}
+                    onEndReachedThreshold={0}
                 />:<View style={styles.isLoading}><Text style={styles.isLoadingText} >Loading...</Text></View>
               }
 
-
+              
 
 
 
@@ -103,6 +110,10 @@ function PostsScreen({navigation}) {
 
 
         </View>
+        {
+        refresh?<View style={styles.refresh}><Text style={styles.refreshText}>Refreshing...</Text>
+        </View>:null
+        }
     </SafeAreaView>
   )
 }
@@ -167,5 +178,14 @@ const styles = StyleSheet.create({
             FlatListContainer:{
               backgroundColor:'red',
               flex:1
+            },
+            refresh:{
+                  alignItems:'center',
+                  padding:20,
+                  backgroundColor:'#eee'
+            },
+            refreshText:{
+             color:'black'
+
             }
 })

@@ -16,19 +16,14 @@ const Post = ({post,tagQ,OnPress}) => {
     const [isDeleted,setIsDeleted]=useState(false)
     const [disapear,setDisapear]=useState(false)
   return (
-    !isDeleted? <TouchableOpacity style={styles.postContainer} onPress={OnPress}  onLongPress={()=>deletePost(post.id)} >
+    (!isDeleted)? <TouchableOpacity style={styles.postContainer} onPress={OnPress}  onLongPress={()=>deletePost(post.id)} >
         <View style={styles.userInfo}>
             {post.owner.picture?<Image source={{uri:post.owner.picture}}  style={styles.userImage}/>:<Image source={require("../shared/avatar.png")} style={styles.userImage}/>
             }
             <View>
             <Text style={styles.userName}>{post.owner.title}. {post.owner.firstName} {post.owner.lastName}</Text>
             <Text style={styles.postDate}>{post.publishDate}</Text>
-             {/* {
-                        post.owner.picture==='undefined'?
-                        <Image source={require("../shared/avatar.png")}  style={styles.userImage}/>:
-                    
-          } */}
-           {/* <Image source={{uri:post.owner.picture}}  style={styles.userImage}/> */}
+
             </View>
         </View>
       
