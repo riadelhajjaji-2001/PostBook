@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Post = ({post,tagQ,OnPress}) => {
+    
     const deletePost=async(posIid)=>{
         const myHeaders=new Headers();
         myHeaders.append("app-id","625c402dc48cf93352d6e34b")
@@ -20,15 +21,15 @@ const Post = ({post,tagQ,OnPress}) => {
             <Text style={styles.userName}>{post.owner.title}. {post.owner.firstName} {post.owner.lastName}</Text>
             <Text style={styles.postDate}>{post.publishDate}</Text>
              {/* {
-         post.owner.picture==='undefined'?
-           <Image source={require("../shared/avatar.png")}  style={styles.userImage}/>:
-           
+                        post.owner.picture==='undefined'?
+                        <Image source={require("../shared/avatar.png")}  style={styles.userImage}/>:
+                    
           } */}
            <Image source={{uri:post.owner.picture}}  style={styles.userImage}/>
             </View>
         </View>
       
-          <Image source={{uri:JSON.stringify(post.image)}}  style={styles.PostImage}/>
+          <Image source={{uri:post.image}}  style={styles.PostImage}/>
           <View style={styles.TextAndTags}>
             <Text style={styles.postText}>{post.text}</Text>
             <View style={styles.postTags}>
@@ -51,10 +52,11 @@ const styles = StyleSheet.create({
     postContainer:{
            
             padding:12,
-            margin:2,
+            margin:0,
             borderStyle:'solid',
             borderColor:'#00f',
-            borderWidth:3
+            borderWidth:2,
+            borderBottomColor:'#fff'
 
     },
     userInfo:{
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
         paddingTop:6
     },
     postTags:{
-       flexWrap:'wrap',
+        flexWrap:'wrap',
         flexDirection:'row',
         
     },
