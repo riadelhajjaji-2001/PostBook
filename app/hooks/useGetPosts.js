@@ -1,5 +1,6 @@
 
-const useGetPosts =async (url) => {
+const useGetPosts =async (url,limit) => {
+    console.log("postsScreen")
         const myHeaders=new Headers();
         myHeaders.append("app-id","625c402dc48cf93352d6e34b");
         const  myInit={
@@ -7,11 +8,9 @@ const useGetPosts =async (url) => {
             headers:myHeaders,
         
         }
-        const res=await fetch(url,myInit);
+        const res=await fetch(url+limit,myInit);
         const data=await res.json();
         return data;
-
-
 
 }
 

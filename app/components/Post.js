@@ -5,18 +5,21 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const Post = ({post,tagQ,OnPress}) => {
     
     const deletePost=async(posIid)=>{
+        console.log("deleting post")
         const myHeaders=new Headers();
         myHeaders.append("app-id","625c402dc48cf93352d6e34b")
         const url=`https://dummyapi.io/data/v1/post/${posIid}`;
         await fetch(url,{headers:myHeaders, method:"DELETE"}).then(res=>setIsDeleted(true))
         setTimeout(()=>setDisapear(true),2000)
+        console.log("post deleted")
     }
     const [isDeleted,setIsDeleted]=useState(false)
     const [disapear,setDisapear]=useState(false)
   return (
     !isDeleted? <TouchableOpacity style={styles.postContainer} onPress={OnPress}  onLongPress={()=>deletePost(post.id)} >
         <View style={styles.userInfo}>
-            <Image source={{uri:JSON.stringify(post.owner.picture)}}  style={styles.userImage}/>
+            {post.owner.picture?<Image source={{uri:post.owner.picture}}  style={styles.userImage}/>:<Image source={require("../shared/avatar.png")} style={styles.userImage}/>
+            }
             <View>
             <Text style={styles.userName}>{post.owner.title}. {post.owner.firstName} {post.owner.lastName}</Text>
             <Text style={styles.postDate}>{post.publishDate}</Text>
@@ -25,11 +28,13 @@ const Post = ({post,tagQ,OnPress}) => {
                         <Image source={require("../shared/avatar.png")}  style={styles.userImage}/>:
                     
           } */}
-           <Image source={{uri:post.owner.picture}}  style={styles.userImage}/>
+           {/* <Image source={{uri:post.owner.picture}}  style={styles.userImage}/> */}
             </View>
         </View>
       
-          <Image source={{uri:post.image}}  style={styles.PostImage}/>
+          {/* <Image source={{uri:post.image}}  style={styles.PostImage}/> */}
+          {post.image?<Image source={{uri:post.image}}  style={styles.PostImage}/>:<Image source={require("../shared/cloud.jpg")} style={styles.PostImage}/>
+            }
           <View style={styles.TextAndTags}>
             <Text style={styles.postText}>{post.text}</Text>
             <View style={styles.postTags}>
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
             borderStyle:'solid',
             borderColor:'#00f',
             borderWidth:2,
-            borderBottomColor:'#fff'
+            borderTopColor:'#fff'
 
     },
     userInfo:{

@@ -4,13 +4,14 @@ import Post from '../components/Post'
 import useGetPosts from '../hooks/useGetPosts'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TopHeader from '../components/TopHeader';
- const url="https://dummyapi.io/data/v1/post?page=1&limit=10"
+ const url="https://dummyapi.io/data/v1/post?limit="
 function PostsScreen({navigation}) {
   //  state
     const [posts,setPosts]=useState([])
     const [isLoading,setIsLoading]=useState(true)
     const [query,setQuery]=useState("")
     const [track,setTrack]=useState(0)
+    const [Limit, setLimit] = useState(0)
   //state
     const searchByTag=async(tag)=>{
         setIsLoading(true)
@@ -19,12 +20,24 @@ function PostsScreen({navigation}) {
         setIsLoading(false)}
     }
   //  
+    const fetchFivePosts=async()=>{
+
+      setIsLoading(true)
+      const fetchedPosts=await useGetPosts(url,Limit);
+      setPosts(await fetchedPosts.data)
+      setIsLoading(false)
+    }
+    const fetchMoreFivePosts=async()=>{
+      setLimit(Limit+5)
+      setIsLoading(true)
+      const fetchedPosts=await useGetPosts(url,Limit);
+      setPosts([posts,...await fetchedPosts.data])
+      setIsLoading(false)
+    }
     useEffect(async()=>{
-        setIsLoading(true)
-        const fetchedPosts=await useGetPosts(url);
-        setPosts(await fetchedPosts.data)
+        setLimit(5)
+        await fetchFivePosts();
        
-        setIsLoading(false)
       
     },[])
 //check if we can pass an entir object as param to the navigation
@@ -33,18 +46,20 @@ function PostsScreen({navigation}) {
   }
   const keepTrack=()=>setTrack(track+1)
   const handleSearchByTag=async(tag)=>{
-              if(tag==""){
-                setIsLoading(true)
+              setIsLoading(true)
+              if(tag===""){
+                
                 const fetchedPosts=await useGetPosts(url);
                 setPosts(fetchedPosts.data);
                 setIsLoading(false)
             }else{
-               await searchByTag(tag)
+              await searchByTag(tag)
               setQuery(tag)
+              setIsLoading(false)
             }
               }
   const renderlist=({e})=><View><Text>{e.name}</Text></View>
-  const renderItem=(post)=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} key={post.id}/>
+  const renderItem=({item:post})=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} key={post.id}/>
   //reeeeeeeeeendreing
   return (
 
@@ -53,11 +68,11 @@ function PostsScreen({navigation}) {
 
       <View style={styles.toolsBar}>
           <View style={styles.search}>
-                 <TextInput style={styles.searchText} placeholder='Search posts' onChangeText={(text)=>handleSearchByTag(text)}/>  
+                 <TextInput style={styles.searchText} placeholder='Search posts' onChangeText={(text)=>{setIsLoading(true); handleSearchByTag(text)}}/>  
                 {/* il reste le cas ou input est vide */}
           </View>
           <TouchableOpacity onPress={()=>navigation.navigate("CreatePost")} style={styles.addPost}>
-              <Icon size={28} name="post-add"  /> 
+              <Icon size={28} name="post-add"  />
           </TouchableOpacity>
           
       </View>
@@ -65,27 +80,18 @@ function PostsScreen({navigation}) {
      
         <View style={styles.Postcontainer}>
 
-            <ScrollView style={styles.container}>
-                {!isLoading?
-                posts.map((post)=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} key={post.id}/>):<View style={styles.isLoading}><Text style={styles.isLoadingText} >Loading...</Text></View>
-                }
-            </ScrollView>
-
-{/* 
-              <SafeAreaView style={styles.FlatListContainer}>
-
-              <FlatList
-                    // data={posts}
-                    // renderItem={renderItem}
-                    // keyExtractor={(post)=>post.id}
+      
+{ 
+            
+            !isLoading? <FlatList
+                    data={posts}
+                    renderItem={renderItem}
+                    keyExtractor={(post)=>post.id}
+                   onEndReached={fetchMoreFivePosts}
                 
-                  data={[{name:1},{name:2},{name:3},{name:4},{name:5}]}
-                  renderItem={renderlist}
-                     keyExtractor={(post)=>post.name}
-                     ItemSeparatorComponent={()=><Text>llllllll</Text>}
                 
-                />
-              </SafeAreaView> */}
+                />:<View style={styles.isLoading}><Text style={styles.isLoadingText} >Loading...</Text></View>
+              }
 
 
 
