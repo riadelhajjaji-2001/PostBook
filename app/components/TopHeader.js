@@ -1,4 +1,4 @@
-import { View, Text,StyleSheet, TouchableWithoutFeedback,Modal, Button } from 'react-native'
+import { View, Text,StyleSheet, TouchableWithoutFeedback,Modal,Image, Button } from 'react-native'
 import {React,useState,useEffect} from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useGetUser, useLogout } from '../config/Database';
@@ -23,14 +23,19 @@ const TopHeader = ({navigation}) => {
 <View style={styles.Header}>
     <View style={styles.HeaderSections}>
      
+     
             {
                 
             login!==null? <TouchableWithoutFeedback onPress={()=>setIsvisible(true)} style={styles.profile}>
+                            <View style={{flexDirection:'row',alignItems:'center'}}>
                                 <Text style={styles.username} >{login.firstName+" "+login.lastName}</Text>
+                                <Image style={styles.avatar} source={require("../shared/avatar.png")}/>
+                            </View>
                                 </TouchableWithoutFeedback>
                                 :(<View style={styles.HeaderSection2}>
                                                         <TouchableWithoutFeedback onPress={()=>navigation.navigate("Login")} style={styles.login}>
-                                                            <Text style={{fontWeight:'bold',textAlign:'center',color:'green'}}>Login</Text>
+                                                            <Text style={{fontWeight:'bold',color:'green'}}>Login</Text>
+                                                            
                                                         </TouchableWithoutFeedback>
                                                         </View>)
                                                     
@@ -58,9 +63,15 @@ const styles = StyleSheet.create({
        
        
     },
+    avatar:{
+            width:30,
+            height:30,
+            borderRadius:100
+    },
    login:{
         color:'green',
         
+      
    },
     HeaderSection1:{
        
@@ -71,7 +82,7 @@ const styles = StyleSheet.create({
     HeaderSections:{
         flexDirection:'row',
         justifyContent:'flex-end',
-        marginRight:12,
+        marginRight:16,
         margin:5,
         alignItems:'flex-start',
       

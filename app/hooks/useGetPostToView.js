@@ -1,6 +1,6 @@
 const useGetPostToView =async (id) => {
     const url=`https://dummyapi.io/data/v1/post/${id}`
-    console.log("postsScreen")
+    console.log("post to view")
         const myHeaders=new Headers();
         myHeaders.append("app-id","625c402dc48cf93352d6e34b");
         const  myInit={

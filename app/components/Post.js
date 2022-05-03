@@ -1,4 +1,4 @@
-import { View, Text, Image,StyleSheet, TouchableOpacity} from 'react-native'
+import { View, Text, Image,StyleSheet, TouchableOpacity, Modal, Button} from 'react-native'
 import React, { useState } from 'react'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -15,8 +15,9 @@ const Post = ({post,tagQ,OnPress}) => {
     }
     const [isDeleted,setIsDeleted]=useState(false)
     const [disapear,setDisapear]=useState(false)
+    const [deleteIsVisible, setDeleteIsVisible] = useState(false)
   return (
-    (!isDeleted)? <TouchableOpacity style={styles.postContainer} onPress={OnPress}  onLongPress={()=>deletePost(post.id)} >
+    (!isDeleted)? <TouchableOpacity style={styles.postContainer} onPress={OnPress}  onLongPress={()=>setDeleteIsVisible(true)} >
         <View style={styles.userInfo}>
             {post.owner.picture?<Image source={{uri:post.owner.picture}}  style={styles.userImage}/>:<Image source={require("../shared/avatar.png")} style={styles.userImage}/>
             }
@@ -44,19 +45,36 @@ const Post = ({post,tagQ,OnPress}) => {
             </View> */}
           </View>
           </View>
+          {/* deleting pop up*/}
+          
+                        <Modal visible={deleteIsVisible} transparent={true}>
+                            <View style={styles.deletePopUp}>
+                                        <Text style={styles.deletePopUpText}>Do you want to delete posts ?</Text>
+                                        <View style={styles.deletePopUpButton}>
+                                           <View><Button color="#bbb"  title='Cancel' onPress={()=>setDeleteIsVisible(false)}/></View>
+                                            <View><Button title='delete' onPress={()=>deletePost(post.id)}/></View>
+
+                                        </View>
+                            </View>
+                        </Modal>
+          
       
     </TouchableOpacity>:disapear?null:<View style={styles.postContainer}><Text>The post was deleted</Text></View>
   )
 }
 const styles = StyleSheet.create({
     postContainer:{
-           
-            padding:12,
-            margin:0,
+            justifyContent:'center',
+            padding:18,
+            margin:12,
+            marginBottom:-14,
             borderStyle:'solid',
-            borderColor:'#00f',
+            borderColor:'rgba(0,0,255,0.6)',
             borderWidth:2,
-            borderTopColor:'#fff'
+            borderTopColor:'#fff',
+            borderBottomWidth:5,
+            height:330,
+            borderRadius:10
 
     },
     userInfo:{
@@ -64,19 +82,24 @@ const styles = StyleSheet.create({
         alignItems:'center',
         marginBottom:30,
         borderBottomWidth:1,
-        borderBottomColor:'#eee',
-        paddingBottom:3,
+        borderBottomColor:'#bbb',
+        paddingBottom:23,
         
     },
     userName:{
         marginLeft:9,
-        marginBottom:5
+        marginBottom:5,
+       
        
         
     },
     postDate:{
         width:'100%',
-        marginLeft:9
+        marginLeft:9,
+        alignSelf:'flex-end',
+        fontSize:12,
+        color:'rgba(0,0,0,0.7)'
+
     },
     userImage:{
         borderRadius:30,
@@ -91,7 +114,7 @@ const styles = StyleSheet.create({
     },
     PostImage:{
         flex:2,
-        height:160,
+        height:190,
         width:190,
             
             
@@ -125,6 +148,31 @@ const styles = StyleSheet.create({
         marginLeft:21
 
         
+    },
+    deletePopUp:{
+        flex:1,
+        height:200,
+        position:'absolute',
+        alignSelf:'center',
+        marginTop:'80%',
+        width:320,
+        backgroundColor:'rgba(0,0,0,0.7)',
+        justifyContent:'space-evenly',
+        alignItems:'center',
+        borderRadius:20
+        
+        
+    },
+    deletePopUpText:{
+        color:'#fff',
+        fontSize:17,
+        fontWeight:'bold'
+    },
+    deletePopUpButton:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignContent:'space-between'
     }
+  
 })
 export default Post

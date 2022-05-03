@@ -3,31 +3,34 @@ import React, { useEffect ,useState} from 'react'
 import useGetPosts from '../hooks/useGetPosts'
 import useGetPostToView from '../hooks/useGetPostToView'
 import useGetComments from '../hooks/useGetComments'
+import Comment from '../components/Comment'
 
 const ViewPostScreen = ({ route,navigation }) => {
   const {id}=route.params
   const [comments, setComments] = useState(null)
   const [post,setPost]=useState(null)
   const [isLoading,setIsLoading]=useState(true)
+  const [ErrorId, setErrorId] = useState(false)
+  const handeErrorId=()=>{setErrorId(true);setIsLoading(false)}
   useEffect(async()=>{
   
     setIsLoading(true)
-    const fetchedPosts= await useGetPostToView(id);
-    setIsLoading(false)
+    const fetchedPosts=await useGetPostToView(id);
+  
     setPost(await fetchedPosts)
     //comments
-    setComments(await useGetComments( post.id,0,5));
+    setComments(await useGetComments(id,0,5));
     console.log(comments)
-    
+    setIsLoading(false)
 },[])
 
-const itemRender=({item:comment})=><View style={{backgroundColor:'red',padding:12}}><Text>{comment.message}ee</Text></View>
+const itemRender=({item:comment})=><Comment comment={comment}/>
 
 
   return (
     //check if post is null because loading post may take some extra time then error occur
-   (isLoading||post===null)?<Text>is Loading...</Text>:(
-   <View>
+   (isLoading||post===null)?<View style={styles.isLoading}><Text style={styles.isLoadingText}>Loading...</Text></View>:(
+   <View style={styles.postContainer}>
       <View style={styles.userInfo}>
        <Image source={{ uri:post.owner.picture}} style={styles.userImage} />
         <View>
@@ -45,30 +48,27 @@ const itemRender=({item:comment})=><View style={{backgroundColor:'red',padding:1
         </View>
       </View>
       <View style={styles.commentsSection}>
-            {comments!=null?<FlatList
+            {comments!=null&&comments!=[]?<FlatList
                   data={comments}
                   renderItem={itemRender}
                   keyExtractor={(item)=>item.id}
               
-              
-              
-              />:null
+              />:<Text>No comments</Text>
               } 
       </View>
-
-
 
     </View>)
   )
 }
 const styles = StyleSheet.create({
   postContainer: {
-
     padding: 12,
-    margin: 2,
+    margin: 1,
     borderStyle: 'solid',
-    borderColor: '#00f',
-    borderWidth: 3
+    borderColor: '#ddd',
+    borderWidth: 2,
+    backgroundColor:'#eee',
+    flex:1
 
   },
   userInfo: {
@@ -82,18 +82,21 @@ const styles = StyleSheet.create({
   },
   userName: {
     marginLeft: 9,
-    marginBottom: 5
+    marginBottom: 5,
+    color:'rgba(0,0,255,0.6)',
+    fontWeight:'bold'
 
 
   },
   postDate: {
     width: '100%',
-    marginLeft: 9
+    marginLeft: 9,
+    color:'rgba(0,0,0,0.6)'
   },
   userImage: {
     borderRadius: 30,
     width: 55,
-    height: 55,
+    height: 50,
     
   },
   PostImage: {
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
     
   },
   postText: {
-
+    fontSize:15,
     marginBottom: 14,
     paddingTop: 6
   },
@@ -126,7 +129,30 @@ const styles = StyleSheet.create({
     alignSelf:'center',
   },
   commentsSection:{
-    padding:121
-  }
+   
+    padding:12,
+    // backgroundColor:"rgba(0,0,0,0.2)",
+    marginTop:9,
+    marginBottom:12
+  
+ 
+    
+   
+    
+  },
+  isLoading:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    marginTop:120,
+    padding:30
+    
+  },
+  isLoadingText:{
+    flex:1,
+    fontWeight:'bold',
+    fontSize:16,
+    color:'rgba(0,0,0,0.5)'
+  },
 })
 export default ViewPostScreen

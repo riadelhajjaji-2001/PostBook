@@ -11,10 +11,11 @@ function PostsScreen({navigation}) {
     const [posts,setPosts]=useState([])
     const [isLoading,setIsLoading]=useState(true)
     const [query,setQuery]=useState("")
-    const [track,setTrack]=useState(0)
+    const [networkError,setNetworkError]=useState(false)
     const [Limit, setLimit] = useState(0)
     const [page, setPage] = useState(0)
     const [refresh, setRefresh] = useState(false)
+    const [retry, setRetry] = useState(false)
    
   //state
     const searchByTag=async(tag)=>{
@@ -25,23 +26,24 @@ function PostsScreen({navigation}) {
     }
   //  
     const fetchFivePosts=async()=>{
-      
       setIsLoading(true)
-      //setPage(page+1)
+      try{
       const fetchedPosts=await useGetPosts(page,Limit);
       setPosts(await fetchedPosts.data)
+    }catch{
+      setNetworkError(true)
+    }
       setIsLoading(false)
     }
     const fetchMoreFivePosts=async()=>{
   
-      setRefresh(true)
-      // setTimeout(async()=>{
+              setRefresh(true)
               setPage(page+1)
               const fetchedPosts=await useGetPosts(page,Limit);
               setPosts([...posts,...await fetchedPosts.data])
-              //  setIsLoading(false)
               setRefresh(false)
-            // },50000)
+              console.log("from refresh")
+         
      
      
     }
@@ -51,7 +53,7 @@ function PostsScreen({navigation}) {
         await fetchFivePosts();
        
       
-    },[])
+    },[retry])
 //check if we can pass an entir object as param to the navigation
     const viewPost=(post_id)=>{
       navigation.navigate("ViewPost",{id:post_id})
@@ -62,7 +64,7 @@ function PostsScreen({navigation}) {
               if(tag===""){
                 
                 const fetchedPosts=await useGetPosts(url);
-                setPosts(fetchedPosts.data);
+                setPosts(await fetchedPosts.data);
                 setIsLoading(false)
             }else{
               await searchByTag(tag)
@@ -73,7 +75,12 @@ function PostsScreen({navigation}) {
  
   const renderItem=({item:post})=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} />
   //reeeeeeeeeendreing
-  return (
+  return networkError?<View style={styles.netwokErrorContainer}>
+    <Text >check network connexion than try</Text>
+    <Button title='Retry' onPress={()=>{setRetry(!retry);setNetworkError(false)}}/>
+  
+  
+  </View>:(
 
     <SafeAreaView style={styles.container}>
       <TopHeader navigation={navigation}/>
@@ -98,7 +105,7 @@ function PostsScreen({navigation}) {
             !isLoading? <FlatList
                     data={posts}
                     renderItem={renderItem}
-                    keyExtractor={(post)=>post.id}
+                    keyExtractor={(post,index)=>post.id+index}
                     onEndReached={async()=>await fetchMoreFivePosts()}
                     onEndReachedThreshold={0}
                 />:<View style={styles.isLoading}><Text style={styles.isLoadingText} >Loading...</Text></View>
@@ -147,8 +154,7 @@ const styles = StyleSheet.create({
                 margin:3,
                 borderWidth:1,
                 width:230,
-                borderTopColor:'blue',
-                borderRightColor:'blue'
+                borderColor:'blue',
 
             },
             searchText:{
@@ -175,7 +181,8 @@ const styles = StyleSheet.create({
             
                flex:1,
               padding:10,
-              paddingTop:0
+              paddingTop:0,
+              
 
 
             },
@@ -191,5 +198,10 @@ const styles = StyleSheet.create({
             refreshText:{
              color:'black'
 
+            },
+            netwokErrorContainer:{
+              flex:1,
+                  justifyContent:'center',
+                  alignItems:'center'
             }
 })
