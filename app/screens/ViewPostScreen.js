@@ -1,50 +1,35 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
 import React, { useEffect ,useState} from 'react'
 import useGetPosts from '../hooks/useGetPosts'
-const postd={
-  "id": "60d21bd367d0d8992e610e25",
-  "image": "https://img.dummyapi.io/photo-1556877986-d40833ec88b4.jpg",
-  "likes": 6,
-  "link": "https://www.behance.net/claudia_udrea",
-  "tags": [
-      "dog",
-      "canine",
-      "animal"
-  ],
-  "text": "Being a proud owner of a frenchie... That means lovely walks and true bonding.. I just love to capture the beauty of nature and my perfect \"batdog\" <3  shallow focus photo of short-coated black dog",
-  "publishDate": "2020-05-19T02:16:25.689Z",
-  "owner": {
-      "id": "60d0fe4f5311236168a109d4",
-      "title": "mr",
-      "firstName": "Valentin",
-      "lastName": "Ortega",
-      "picture": "https://randomuser.me/api/portraits/med/men/3.jpg"
-  }
-}
+import useGetPostToView from '../hooks/useGetPostToView'
+import useGetComments from '../hooks/useGetComments'
+
 const ViewPostScreen = ({ route,navigation }) => {
   const {id}=route.params
-  console.log(id)
-  const url=`https://dummyapi.io/data/v1/post/${id}`
+  const [comments, setComments] = useState(null)
   const [post,setPost]=useState(null)
   const [isLoading,setIsLoading]=useState(true)
   useEffect(async()=>{
+  
     setIsLoading(true)
-    const fetchedPosts= await useGetPosts(url);
-    console.log(fetchedPosts)
+    const fetchedPosts= await useGetPostToView(id);
     setIsLoading(false)
-    setPost(fetchedPosts)
+    setPost(await fetchedPosts)
+    //comments
+    setComments(await useGetComments( post.id,0,5));
+    console.log(comments)
     
-},[id])
+},[])
 
-
+const itemRender=({item:comment})=><View style={{backgroundColor:'red',padding:12}}><Text>{comment.message}ee</Text></View>
 
 
   return (
     //check if post is null because loading post may take some extra time then error occur
-   (isLoading||post==null)?<Text>is Loading...</Text>:(
+   (isLoading||post===null)?<Text>is Loading...</Text>:(
    <View>
       <View style={styles.userInfo}>
-        <Image source={{ uri: post.owner.picture }} style={styles.userImage} />
+       <Image source={{ uri:post.owner.picture}} style={styles.userImage} />
         <View>
           <Text style={styles.userName}>{post.owner.title}. {post.owner.firstName} {post.owner.lastName}</Text>
           <Text style={styles.postDate}>{post.publishDate}</Text>
@@ -59,6 +44,19 @@ const ViewPostScreen = ({ route,navigation }) => {
           <Text style={styles.postTag}>{post.tags[2]}</Text>
         </View>
       </View>
+      <View style={styles.commentsSection}>
+            {comments!=null?<FlatList
+                  data={comments}
+                  renderItem={itemRender}
+                  keyExtractor={(item)=>item.id}
+              
+              
+              
+              />:null
+              } 
+      </View>
+
+
 
     </View>)
   )
@@ -99,15 +97,14 @@ const styles = StyleSheet.create({
     
   },
   PostImage: {
-    height: 130,
-    width: 100,
+    alignSelf:'center',
+    width: '80%',
+    height: 250,
     
   },
   postText: {
 
     marginBottom: 14,
-  
-    maxWidth: '90%',
     paddingTop: 6
   },
   postTags: {
@@ -121,15 +118,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderStyle: 'solid',
     borderColor: '#000',
-    borderWidth: 2
+    borderWidth: 2,
+    marginRight:5
 
   },
   TextAndTags: {
-    
-    width: '50%',
-    marginLeft: 21
-
-
+    alignSelf:'center',
+  },
+  commentsSection:{
+    padding:121
   }
 })
 export default ViewPostScreen

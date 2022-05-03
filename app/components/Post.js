@@ -26,8 +26,7 @@ const Post = ({post,tagQ,OnPress}) => {
 
             </View>
         </View>
-      
-          {/* <Image source={{uri:post.image}}  style={styles.PostImage}/> */}
+      <View style={styles.ImageAndTags}>
           {post.image?<Image source={{uri:post.image}}  style={styles.PostImage}/>:<Image source={require("../shared/cloud.jpg")} style={styles.PostImage}/>
             }
           <View style={styles.TextAndTags}>
@@ -43,6 +42,7 @@ const Post = ({post,tagQ,OnPress}) => {
                     <Text>{post.likes}</Text>
                 </View>
             </View> */}
+          </View>
           </View>
       
     </TouchableOpacity>:disapear?null:<View style={styles.postContainer}><Text>The post was deleted</Text></View>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     userInfo:{
         flexDirection:'row',
         alignItems:'center',
-        marginBottom:5,
+        marginBottom:30,
         borderBottomWidth:1,
         borderBottomColor:'#eee',
         paddingBottom:3,
@@ -84,9 +84,15 @@ const styles = StyleSheet.create({
         height:55,
       
     },
+    ImageAndTags:{
+        flex:4,
+        flexDirection:'row'
+
+    },
     PostImage:{
-            height:130,
-            width:100,
+        flex:2,
+        height:160,
+        width:190,
             
             
     },
@@ -100,6 +106,7 @@ const styles = StyleSheet.create({
     postTags:{
         flexWrap:'wrap',
         flexDirection:'row',
+        margin:3
         
     },
     postTag:{
@@ -108,7 +115,8 @@ const styles = StyleSheet.create({
         borderRadius:5,
         borderStyle:'solid',
         borderColor:'#000',
-        borderWidth:2
+        borderWidth:2,
+        margin:3
         
     },
     TextAndTags:{

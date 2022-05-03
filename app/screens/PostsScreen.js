@@ -4,6 +4,7 @@ import Post from '../components/Post'
 import useGetPosts from '../hooks/useGetPosts'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TopHeader from '../components/TopHeader';
+import useGetPostsByTag from '../hooks/useGetPostsByTag';
 
 function PostsScreen({navigation}) {
   //  state
@@ -18,7 +19,7 @@ function PostsScreen({navigation}) {
   //state
     const searchByTag=async(tag)=>{
         setIsLoading(true)
-        const fetchedPosts= await useGetPosts(`https://dummyapi.io/data/v1/tag/${tag}/post`,5);
+        const fetchedPosts= await useGetPostsByTag(tag,page,Limit);
         if (fetchedPosts!==[]) {setPosts(fetchedPosts.data);
         setIsLoading(false)}
     }
@@ -34,11 +35,14 @@ function PostsScreen({navigation}) {
     const fetchMoreFivePosts=async()=>{
   
       setRefresh(true)
-      setPage(page+1)
-      const fetchedPosts=await useGetPosts(page,Limit);
-      setPosts([...await fetchedPosts.data])
-      setIsLoading(false)
-      setRefresh(false)
+      // setTimeout(async()=>{
+              setPage(page+1)
+              const fetchedPosts=await useGetPosts(page,Limit);
+              setPosts([...posts,...await fetchedPosts.data])
+              //  setIsLoading(false)
+              setRefresh(false)
+            // },50000)
+     
      
     }
     useEffect(async()=>{

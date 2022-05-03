@@ -15,7 +15,7 @@ const CreatePostScreen = ({navigation}) => {
 
     useEffect(async()=>{
         const user=await useGetUser();
-        setOwner(user)
+        setOwner(await user)
        
               
    },[])
@@ -29,7 +29,7 @@ const CreatePostScreen = ({navigation}) => {
                             ...tags
                             ],
                             text:text,
-                            owner:owner.id//"6261f48d66f8f961bb3a6aa5"
+                            owner:owner?owner.id:""//"6261f48d66f8f961bb3a6aa5"
                 })
                
        

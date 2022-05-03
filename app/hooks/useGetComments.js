@@ -1,6 +1,5 @@
-
-const useGetPosts =async (page,limit) => {
-    const url=`https://dummyapi.io/data/v1/post?page=${page}&limit=${limit}`
+const useGetComments =async (id,page,limit) => {
+    const url=`https://dummyapi.io/data/v1/post/${id}/comment?page=${page}&limit=${limit}`
     console.log("postsScreen")
         const myHeaders=new Headers();
         myHeaders.append("app-id","625c402dc48cf93352d6e34b");
@@ -15,4 +14,4 @@ const useGetPosts =async (page,limit) => {
 
 }
 
-export default useGetPosts
+export default useGetComments
