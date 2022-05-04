@@ -47,7 +47,7 @@ const Post = ({post,tagQ,OnPress}) => {
           </View>
           {/* deleting pop up*/}
           
-                        <Modal visible={deleteIsVisible} transparent={true}>
+                        <Modal animationType="slide" visible={deleteIsVisible} transparent={true}>
                             <View style={styles.deletePopUp}>
                                         <Text style={styles.deletePopUpText}>Do you want to delete posts ?</Text>
                                         <View style={styles.deletePopUpButton}>

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Image, FlatList, ScrollView } from 'react-native'
 import React, { useEffect ,useState} from 'react'
 import useGetPosts from '../hooks/useGetPosts'
 import useGetPostToView from '../hooks/useGetPostToView'
@@ -24,13 +24,13 @@ const ViewPostScreen = ({ route,navigation }) => {
     setIsLoading(false)
 },[])
 
-const itemRender=({item:comment})=><Comment comment={comment}/>
+//const itemRender=({item:comment})=><Comment comment={comment}/>
 
 
   return (
     //check if post is null because loading post may take some extra time then error occur
    (isLoading||post===null)?<View style={styles.isLoading}><Text style={styles.isLoadingText}>Loading...</Text></View>:(
-   <View style={styles.postContainer}>
+   <ScrollView style={styles.postContainer}>
       <View style={styles.userInfo}>
        <Image source={{ uri:post.owner.picture}} style={styles.userImage} />
         <View>
@@ -48,16 +48,11 @@ const itemRender=({item:comment})=><Comment comment={comment}/>
         </View>
       </View>
       <View style={styles.commentsSection}>
-            {comments!=null&&comments!=[]?<FlatList
-                  data={comments}
-                  renderItem={itemRender}
-                  keyExtractor={(item)=>item.id}
-              
-              />:<Text>No comments</Text>
+            {comments!=null&&comments!=[]?comments.map((comment)=><Comment comment={comment} key={comment.id}/>):<Text>No comments</Text>
               } 
       </View>
 
-    </View>)
+    </ScrollView>)
   )
 }
 const styles = StyleSheet.create({

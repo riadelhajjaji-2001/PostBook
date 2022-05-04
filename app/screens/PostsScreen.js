@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {  Text, View,TextInput,StyleSheet,ScrollView, TouchableOpacity, FlatList, SafeAreaView, Button} from 'react-native'
+import {  Text, View,TextInput,StyleSheet, TouchableOpacity, FlatList, SafeAreaView, Button} from 'react-native'
 import Post from '../components/Post'
 import useGetPosts from '../hooks/useGetPosts'
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -16,13 +16,19 @@ function PostsScreen({navigation}) {
     const [page, setPage] = useState(0)
     const [refresh, setRefresh] = useState(false)
     const [retry, setRetry] = useState(false)
+    
    
   //state
     const searchByTag=async(tag)=>{
-        setIsLoading(true)
-        const fetchedPosts= await useGetPostsByTag(tag,page,Limit);
-        if (fetchedPosts!==[]) {setPosts(fetchedPosts.data);
-        setIsLoading(false)}
+        
+          var fetchedPosts= await useGetPostsByTag(tag,page,Limit);
+          const PostsArray=await fetchedPosts.data;
+          setPosts(await fetchedPosts.data)
+          setIsLoading(false)       
+                    
+        
+       
+      //  console.log(fetchedPosts.data)
     }
   //  
     const fetchFivePosts=async()=>{
@@ -60,17 +66,20 @@ function PostsScreen({navigation}) {
   }
   
   const handleSearchByTag=async(tag)=>{
-              setIsLoading(true)
+             
+              
               if(tag===""){
-                
-                const fetchedPosts=await useGetPosts(url);
+                setIsLoading(true)
+                const fetchedPosts=await useGetPosts(page,Limit);
                 setPosts(await fetchedPosts.data);
                 setIsLoading(false)
             }else{
+              setIsLoading(true)
               await searchByTag(tag)
               setQuery(tag)
-              setIsLoading(false)
+             
             }
+            setIsLoading(false)
               }
  
   const renderItem=({item:post})=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} />
@@ -87,22 +96,24 @@ function PostsScreen({navigation}) {
 
       <View style={styles.toolsBar}>
           <View style={styles.search}>
-                 <TextInput style={styles.searchText} placeholder='Search posts' onChangeText={(text)=>{setIsLoading(true); handleSearchByTag(text)}}/>  
+                 <TextInput style={styles.searchText} placeholder='Search posts' onChangeText={async(text)=>{setIsLoading(true);await handleSearchByTag(text)}}/>  
                 {/* il reste le cas ou input est vide */}
           </View>
           <TouchableOpacity onPress={()=>navigation.navigate("CreatePost")} style={styles.addPost}>
-              <Icon size={28} name="post-add"  />
+              <Icon size={28} name="post-add"/>
           </TouchableOpacity>
           
       </View>
 
      
         <View style={styles.Postcontainer}>
-
-      
-{ 
-            
-            !isLoading? <FlatList
+            { 
+             !isLoading?
+                posts.length===0? <View style={styles.noResultForSearch}>
+                  <Text style={styles.noResultForSearchText}>
+                No results for that tag</Text>
+                      </View>:
+                    <FlatList
                     data={posts}
                     renderItem={renderItem}
                     keyExtractor={(post,index)=>post.id+index}
@@ -193,15 +204,25 @@ const styles = StyleSheet.create({
             refresh:{
                   alignItems:'center',
                   padding:20,
-                  backgroundColor:'#eee'
+                  backgroundColor:'rgba(0,0,0,0.6)'
             },
             refreshText:{
-             color:'black'
+             color:'#fff',
+             fontWeight:'bold'
 
             },
             netwokErrorContainer:{
               flex:1,
                   justifyContent:'center',
                   alignItems:'center'
+            },
+            noResultForSearch:{
+              flex:1,
+              justifyContent:'flex-start',
+              backgroundColor:'#eee'
+            },
+            noResultForSearchText:{
+              padding:40,
+              color:"black"
             }
 })
