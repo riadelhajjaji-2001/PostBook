@@ -32,13 +32,17 @@ const ViewPostScreen = ({ route,navigation }) => {
    (isLoading||post===null)?<View style={styles.isLoading}><Text style={styles.isLoadingText}>Loading...</Text></View>:(
    <ScrollView style={styles.postContainer}>
       <View style={styles.userInfo}>
-       <Image source={{ uri:post.owner.picture}} style={styles.userImage} />
+      {post.owner.picture?<Image source={{uri:post.owner.picture}}  style={styles.userImage}/>:<Image source={require("../shared/avatar.png")} style={styles.userImage}/>
+            } 
+       
         <View>
           <Text style={styles.userName}>{post.owner.title}. {post.owner.firstName} {post.owner.lastName}</Text>
           <Text style={styles.postDate}>{post.publishDate}</Text>
         </View>
       </View>
-      <Image source={{ uri: post.image }} style={styles.PostImage} />
+      {post.image?<Image source={{uri:post.image}}  style={styles.PostImage}/>:<Image source={require("../shared/cloud.jpg")} style={styles.PostImage}/>
+            }
+      
       <View style={styles.TextAndTags}>
         <Text style={styles.postText}>{post.text}</Text>
         <View style={styles.postTags}>
@@ -48,7 +52,7 @@ const ViewPostScreen = ({ route,navigation }) => {
         </View>
       </View>
       <View style={styles.commentsSection}>
-            {comments!=null&&comments!=[]?comments.map((comment)=><Comment comment={comment} key={comment.id}/>):<Text>No comments</Text>
+            {comments&&comments.length!=0?comments.map((comment)=><Comment comment={comment} key={comment.id}/>):<Text>No comments</Text>
               } 
       </View>
 

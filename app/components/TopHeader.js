@@ -13,7 +13,8 @@ const TopHeader = ({navigation}) => {
      const [logoutMessage,setLogoutMessage]=useState("")
      useEffect(async() => {
         const user=await useGetUser();
-        setLogin(user)
+         setLogin(await user)
+        return ()=>setLogin({})
         
      }, [login])
      const hideLoginPage=()=>{

@@ -2,7 +2,7 @@
 import { View, Text,TextInput,StyleSheet,Button, Pressable } from 'react-native'
 import {React ,useState,useEffect, useCallback} from 'react'
 import { useSetUser } from '../config/Database';
-import getCircularReplacer from '../hooks/ScyclicStruc'
+
 const LoginScreen = ({navigation}) => {
 
   const [user, setUser] = useState(null);
@@ -21,7 +21,7 @@ const LoginScreen = ({navigation}) => {
             const  myInit={
                 method:'POST',
                 headers:myHeaders,
-                body:JSON.stringify(myuser,getCircularReplacer()),
+                body:JSON.stringify(myuser),
             }
             console.log(myInit)
             
@@ -53,10 +53,9 @@ const LoginScreen = ({navigation}) => {
             }}/></View>
          </View>
            
-                <Pressable style={styles.home} onPress={()=>navigation.navigate("About",{skip:true})}>
-                      <Text style={{color:'#00f'}}>X</Text>
-                </Pressable>
-           
+               
+                      <Button onPress={()=>navigation.navigate("About",{skip:true})} title='Return to Posts' />
+              
     </View>
   )
 }
@@ -72,18 +71,16 @@ const styles = StyleSheet.create({
     borderWidth:1
 } ,
   home:{
-      backgroundColor:'rgba(0,0,0,0.5)',
-      width:34,
-      height:34,
-      borderRadius:100,
+     
+     
       fontSize:25,
       fontWeight:'bold',
       alignItems:'center',
       color:"#fff",
-      shadowRadius:16,
-      shadowColor:'blue',
-      borderWidth:1,
+      
+      
       justifyContent:'center',
+      
      
 },
   inputs:{

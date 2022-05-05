@@ -20,11 +20,13 @@ function PostsScreen({navigation}) {
    
   //state
     const searchByTag=async(tag)=>{
-        
+          try{
           var fetchedPosts= await useGetPostsByTag(tag,page,Limit);
           const PostsArray=await fetchedPosts.data;
           setPosts(await fetchedPosts.data)
-          setIsLoading(false)       
+          setIsLoading(false)      }catch{
+            setNetworkError(true)
+          } 
                     
         
        

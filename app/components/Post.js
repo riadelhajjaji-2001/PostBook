@@ -1,6 +1,6 @@
 import { View, Text, Image,StyleSheet, TouchableOpacity, Modal, Button} from 'react-native'
 import React, { useState } from 'react'
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const Post = ({post,tagQ,OnPress}) => {
     
@@ -16,6 +16,7 @@ const Post = ({post,tagQ,OnPress}) => {
     const [isDeleted,setIsDeleted]=useState(false)
     const [disapear,setDisapear]=useState(false)
     const [deleteIsVisible, setDeleteIsVisible] = useState(false)
+    const [like, setLike] = useState(true)
   return (
     (!isDeleted)? <TouchableOpacity style={styles.postContainer} onPress={OnPress}  onLongPress={()=>setDeleteIsVisible(true)} >
         <View style={styles.userInfo}>
@@ -37,19 +38,14 @@ const Post = ({post,tagQ,OnPress}) => {
                     <Text style={[styles.postTag,(tagQ==post.tags[1])?{backgroundColor:'red'}:null]}>{post.tags[1]}</Text>
                     <Text style={[styles.postTag,(tagQ==post.tags[2])?{backgroundColor:'red'}:null]}>{post.tags[2]}</Text>
             </View>
-            {/* <View>
-                <View>
-                    <Icon size={23} name="menu" onPress={()=>{}}/>
-                    <Text>{post.likes}</Text>
-                </View>
-            </View> */}
+           
           </View>
           </View>
           {/* deleting pop up*/}
           
                         <Modal animationType="slide" visible={deleteIsVisible} transparent={true}>
                             <View style={styles.deletePopUp}>
-                                        <Text style={styles.deletePopUpText}>Do you want to delete posts ?</Text>
+                                        <Text style={styles.deletePopUpText}>Do you want to delete the post ?</Text>
                                         <View style={styles.deletePopUpButton}>
                                            <View><Button color="#bbb"  title='Cancel' onPress={()=>setDeleteIsVisible(false)}/></View>
                                             <View><Button title='delete' onPress={()=>deletePost(post.id)}/></View>
@@ -57,7 +53,11 @@ const Post = ({post,tagQ,OnPress}) => {
                                         </View>
                             </View>
                         </Modal>
-          
+                        <TouchableOpacity onPress={()=>setLike(!like)} style={styles.like}>
+                       
+                    <Icon color={'blue'} name={like?"like2":"like1"} size={23}/>
+                    <Text>{post.likes+(like?0:1)}</Text>
+                </TouchableOpacity>
       
     </TouchableOpacity>:disapear?null:<View style={styles.postContainer}><Text>The post was deleted</Text></View>
   )
@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
             borderWidth:2,
             borderTopColor:'#fff',
             borderBottomWidth:5,
-            height:330,
-            borderRadius:10
+            height:370,
+          
 
     },
     userInfo:{
@@ -172,6 +172,14 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
         alignContent:'space-between'
+    },
+    like:{
+            alignSelf:'flex-end',
+            flex:1,
+           position:'absolute',
+            padding:20,
+            bottom:0,
+            marginTop:12
     }
   
 })

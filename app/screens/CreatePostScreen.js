@@ -1,7 +1,7 @@
 import { View,Text ,TextInput,StyleSheet, Button, Pressable, Image} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useGetUser } from '../config/Database'
-import getCircularReplacer from '../hooks/ScyclicStruc'
+
 const CreatePostScreen = ({navigation}) => {
     const [text,setText]=useState("")
     const [image,setImage]=useState("")
