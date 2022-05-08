@@ -14,6 +14,10 @@ _-PostBook_
 **Technologie used :**</br>
 _-React Native_
 
+**The application build (apk) using Expo Cli:**
+
+    https://expo.dev/artifacts/7d6f6878-d8dc-48bf-ac22-91a0d36952b3
+
 **Prject structure**:
          </br> _-Fetching posts from dummyapi.io and display it in the screen._
           </br>_-Infinite scroll loading (fetch every time we reach the end of scroll five posts)._
