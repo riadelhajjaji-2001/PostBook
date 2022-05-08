@@ -26,5 +26,5 @@ _-React Native_
 
          NB:
          
-           **The vedios that explain how the app work are in the Vedio folder in the repository above.**
            **We can't upload images to dummyapi beacause it doesn't accept cross-origin So we replaced thos image by local images but there not really in the database of the api.**
+            **The vedios that explain how the app work are in the Vedio folder in the repository above.**
