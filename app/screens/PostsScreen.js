@@ -7,7 +7,7 @@ import TopHeader from '../components/TopHeader';
 import useGetPostsByTag from '../hooks/useGetPostsByTag';
 
 function PostsScreen({navigation}) {
-  //  state
+  //  state declaration
     const [posts,setPosts]=useState([])
     const [isLoading,setIsLoading]=useState(true)
     const [query,setQuery]=useState("")
@@ -18,21 +18,8 @@ function PostsScreen({navigation}) {
     const [retry, setRetry] = useState(false)
     
    
-  //state
-    const searchByTag=async(tag)=>{
-          try{
-          var fetchedPosts= await useGetPostsByTag(tag,page,Limit);
-          const PostsArray=await fetchedPosts.data;
-          setPosts(await fetchedPosts.data)
-          setIsLoading(false)      }catch{
-            setNetworkError(true)
-          } 
-                    
-        
-       
-      //  console.log(fetchedPosts.data)
-    }
-  //  
+  
+//fetching posts before reaching the end of scroll for the first time
     const fetchFivePosts=async()=>{
       setIsLoading(true)
       try{
@@ -43,6 +30,7 @@ function PostsScreen({navigation}) {
     }
       setIsLoading(false)
     }
+//fetching for infinite scrolling
     const fetchMoreFivePosts=async()=>{
   
               setRefresh(true)
@@ -55,6 +43,7 @@ function PostsScreen({navigation}) {
      
      
     }
+//Load post after mounting
     useEffect(async()=>{
         setPage(0)
         setLimit(5)
@@ -62,14 +51,21 @@ function PostsScreen({navigation}) {
        
       
     },[retry])
-//check if we can pass an entir object as param to the navigation
     const viewPost=(post_id)=>{
       navigation.navigate("ViewPost",{id:post_id})
   }
-  
-  const handleSearchByTag=async(tag)=>{
-             
-              
+
+  //search by tag handling
+  const searchByTag=async(tag)=>{
+    try{
+        var fetchedPosts= await useGetPostsByTag(tag,page,Limit);
+        const PostsArray=await fetchedPosts.data;
+        setPosts(await fetchedPosts.data)
+        setIsLoading(false)      }catch{
+        setNetworkError(true)
+    }
+}
+const handleSearchByTag=async(tag)=>{ 
               if(tag===""){
                 setIsLoading(true)
                 const fetchedPosts=await useGetPosts(page,Limit);
@@ -83,9 +79,9 @@ function PostsScreen({navigation}) {
             }
             setIsLoading(false)
               }
- 
+//Posts component rendered for flatList native Component
   const renderItem=({item:post})=><Post tagQ={query} OnPress={()=>viewPost(post.id)} post={post} />
-  //reeeeeeeeeendreing
+//screen Body
   return networkError?<View style={styles.netwokErrorContainer}>
     <Text >check network connexion than try</Text>
     <Button title='Retry' onPress={()=>{setRetry(!retry);setNetworkError(false)}}/>
@@ -94,8 +90,9 @@ function PostsScreen({navigation}) {
   </View>:(
 
     <SafeAreaView style={styles.container}>
+      {/* Top header is a section where we diplay login info and the button for login and logout  */}
       <TopHeader navigation={navigation}/>
-
+{/* ToolsBar section is where the search input and the button for adding posts */}
       <View style={styles.toolsBar}>
           <View style={styles.search}>
                  <TextInput style={styles.searchText} placeholder='Search posts' onChangeText={async(text)=>{setIsLoading(true);await handleSearchByTag(text)}}/>  
@@ -107,6 +104,7 @@ function PostsScreen({navigation}) {
           
       </View>
 
+      {/* Here is the section where posts will be displayed  */}
      
         <View style={styles.Postcontainer}>
             { 
@@ -134,7 +132,9 @@ function PostsScreen({navigation}) {
 
 
         </View>
+    
         {
+   //the end of scroll refresher component
         refresh?<View style={styles.refresh}><Text style={styles.refreshText}>Refreshing...</Text>
         </View>:null
         }
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
             },
             addPost:{
             
-            // backgroundColor:'blue',
+           
               padding:7,
             
 
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
             searchText:{
                padding:5,
                marginRight:23
-              // fontSize:18,
+             
              
             },
             isLoading:{

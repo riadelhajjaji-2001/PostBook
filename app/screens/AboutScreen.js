@@ -1,8 +1,16 @@
+
+
+
+
+///This screen is never used ,it will be used for some purpose in futur
+
+
 import { View, Text, Button,StyleSheet } from 'react-native'
 import {React,useEffect} from 'react'
 
 const AboutScreen = ({route,navigation}) => {
  
+  
   useEffect(() => {
     
     

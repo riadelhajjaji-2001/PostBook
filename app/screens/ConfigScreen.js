@@ -1,4 +1,25 @@
-import { View, Text,TextInput,StyleSheet,Button } from 'react-native'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///This screen is never used ,it will be used for some purpose in futur
+
+
+
+import { View, Text} from 'react-native'
 import {useState,useEffect} from 'react'
 import {  useGetUser } from '../config/Database';
 

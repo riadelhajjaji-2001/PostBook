@@ -1,17 +1,15 @@
-import { View,Text ,TextInput,StyleSheet, Button, Pressable, Image} from 'react-native'
+import { View,Text ,TextInput,StyleSheet, Button, Image} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useGetUser } from '../config/Database'
 
 const CreatePostScreen = ({navigation}) => {
     const [text,setText]=useState("")
     const [image,setImage]=useState("")
-    const [link,setLink]=useState("")
     const [tags,setTags]=useState([])
     const [owner,setOwner]=useState({})
     const [post,setPost]=useState({})
-    //const [post,setPost]=useState({})
 
-
+   
 
     useEffect(async()=>{
         const user=await useGetUser();
@@ -21,7 +19,7 @@ const CreatePostScreen = ({navigation}) => {
    },[])
 
     useEffect(async()=>{
-       //  setOwner(await useGetUser())
+    
          setPost({
                             image: image,
                             link: "https://www.behance.net/claudia_udrea",//optional
@@ -29,7 +27,7 @@ const CreatePostScreen = ({navigation}) => {
                             ...tags
                             ],
                             text:text,
-                            owner:owner?owner.id:""//"6261f48d66f8f961bb3a6aa5"
+                            owner:owner?owner.id:""
                 })
                
        
@@ -70,9 +68,7 @@ const CreatePostScreen = ({navigation}) => {
                 navigation.navigate("About",{skip:true})
                 }}/>
        </View>
-        {/* <Pressable style={styles.home} onPress={()=>navigation.navigate("Home")}>
-            <Text>Return to Home</Text>
-            </Pressable> */}
+       
     </View>):<View style={styles.fallback}><Text style={styles.fallbackText}>You must Log in</Text>
                  <Button title="Log in" onPress={()=>navigation.navigate("Login")}/>
             </View>
@@ -87,7 +83,7 @@ const styles = StyleSheet.create({
        
     },
     owner:{
-           // backgroundColor:'#eee',
+          
             alignItems:'center'
            
             

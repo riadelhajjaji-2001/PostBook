@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet, Image, FlatList, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import React, { useEffect ,useState} from 'react'
-import useGetPosts from '../hooks/useGetPosts'
 import useGetPostToView from '../hooks/useGetPostToView'
 import useGetComments from '../hooks/useGetComments'
 import Comment from '../components/Comment'
@@ -11,7 +10,6 @@ const ViewPostScreen = ({ route,navigation }) => {
   const [post,setPost]=useState(null)
   const [isLoading,setIsLoading]=useState(true)
   const [ErrorId, setErrorId] = useState(false)
-  const handeErrorId=()=>{setErrorId(true);setIsLoading(false)}
   useEffect(async()=>{
   
     setIsLoading(true)
@@ -23,9 +21,6 @@ const ViewPostScreen = ({ route,navigation }) => {
     console.log(comments)
     setIsLoading(false)
 },[])
-
-//const itemRender=({item:comment})=><Comment comment={comment}/>
-
 
   return (
     //check if post is null because loading post may take some extra time then error occur
@@ -51,6 +46,7 @@ const ViewPostScreen = ({ route,navigation }) => {
           <Text style={styles.postTag}>{post.tags[2]}</Text>
         </View>
       </View>
+      {/* Here we display comments */}
       <View style={styles.commentsSection}>
             {comments&&comments.length!=0?comments.map((comment)=><Comment comment={comment} key={comment.id}/>):<Text>No comments</Text>
               } 
@@ -130,7 +126,6 @@ const styles = StyleSheet.create({
   commentsSection:{
    
     padding:12,
-    // backgroundColor:"rgba(0,0,0,0.2)",
     marginTop:9,
     marginBottom:12
   

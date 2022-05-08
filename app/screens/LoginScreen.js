@@ -1,6 +1,6 @@
 
-import { View, Text,TextInput,StyleSheet,Button, Pressable } from 'react-native'
-import {React ,useState,useEffect, useCallback} from 'react'
+import { View, Text,TextInput,StyleSheet,Button } from 'react-native'
+import {React ,useState,useEffect} from 'react'
 import { useSetUser } from '../config/Database';
 
 const LoginScreen = ({navigation}) => {
@@ -9,7 +9,9 @@ const LoginScreen = ({navigation}) => {
   const [firstname, setFirstname] = useState("")
   const [lastname, setLastname] = useState("")
   const [email, setEmail] = useState("")
+
   const url="https://dummyapi.io/data/v1/user/create"
+  
     const sendUser=async (myuser) => {
             if(myuser.firstName===""||myuser.lastName===""||myuser.email===""){
               return 
